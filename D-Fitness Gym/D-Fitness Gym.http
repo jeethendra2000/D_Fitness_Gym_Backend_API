@@ -1,0 +1,7 @@
+@D_Fitness_Gym_HostAddress = https://localhost:7093
+
+###
+
+GET {{D_Fitness_Gym_HostAddress}}/api/users
+
+###
