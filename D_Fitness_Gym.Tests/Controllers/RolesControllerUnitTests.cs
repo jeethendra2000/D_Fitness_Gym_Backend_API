@@ -1,6 +1,6 @@
 namespace D_Fitness_Gym.Tests.Controllers
 {
-    public class UnitTest1
+    public class RolesControllerUnitTests
     {
         [Fact]
         public void Test1()

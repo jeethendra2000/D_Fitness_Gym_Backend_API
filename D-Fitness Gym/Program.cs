@@ -1,3 +1,4 @@
+using DotNetEnv;
 using D_Fitness_Gym.Data;
 using D_Fitness_Gym.Repositories;
 using D_Fitness_Gym.Repositories.Interfaces;
@@ -6,6 +7,12 @@ using D_Fitness_Gym.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Load environment variables in development from .env
+if (builder.Environment.IsDevelopment())
+{
+    Env.Load(); // loads variables from .env
+}
 
 // Register Controller
 builder.Services.AddControllers();
@@ -21,8 +28,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Configure EF Core with connection string from appsettings.json
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultSQLConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection")));
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
