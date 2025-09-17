@@ -1,4 +1,5 @@
-﻿using D_Fitness_Gym.Models.DTO;
+﻿using AutoMapper;
+using D_Fitness_Gym.Models.DTO.RoleDto;
 using D_Fitness_Gym.Models.Entities;
 using D_Fitness_Gym.Repositories.Interfaces;
 using D_Fitness_Gym.Services.Interfaces;
@@ -6,44 +7,58 @@ using D_Fitness_Gym.Services.Interfaces;
 namespace D_Fitness_Gym.Services
 {
     // Business logic layer
-    public class RoleService(IRoleRepository repository) : IRoleService
+    public class RoleService(IRoleRepository roleRepository, IMapper mapper, ILogger<RoleService> logger) : 
+        BaseService<Role, CreateRoleDto, UpdateRoleDto, RetrieveRoleDto>(roleRepository, mapper, logger), IRoleService
     {
-        private readonly IRoleRepository _repository = repository;
+        private readonly IRoleRepository _roleRepository = roleRepository;
 
-        public async Task<IEnumerable<Role>> GetAllRolesAsync() => await _repository.GetAllRolesAsync();
-
-        public async Task<Role?> GetRoleByIdAsync(Guid id) => await _repository.GetRoleByIdAsync(id);
-       
-        public async Task<Role> CreateRoleAsync(RoleDto roleDto)
+        /// <summary>
+        /// Deletes a role by its ID, preventing deletion of system roles.
+        /// </summary>
+        public override async Task<bool> DeleteAsync(Guid id)
         {
-            var role = new Role { Name = roleDto.Name };
+            _logger.LogInformation($"Attempting to delete Role with ID: {id}");
 
-            return await _repository.CreateRoleAsync(role);
-        }
-
-        public async Task<Role?> UpdateRoleAsync(Guid id, RoleDto roleDto)
-        {
-            var existingRole = await _repository.GetRoleByIdAsync(id);
-
-            if (existingRole == null) 
-                return existingRole;
-
-            existingRole.Name = roleDto.Name;
-
-            return await _repository.UpdateRoleAsync(existingRole);
-        }
-
-        public async Task<bool> DeleteRoleAsync(Guid id)
-        {
             // ❌ Prevent deleting system roles
             if (id == Guid.Parse("11111111-1111-1111-1111-111111111111") ||
                 id == Guid.Parse("22222222-2222-2222-2222-222222222222") ||
                 id == Guid.Parse("33333333-3333-3333-3333-333333333333"))
             {
+                _logger.LogError($"{typeof(Role).Name} with ID: {id} could not be deleted because System roles cannot be deleted.");
                 throw new InvalidOperationException("System roles cannot be deleted.");
             }
 
-            return await _repository.DeleteRoleAsync(id);
+            // Check if the entity exists before deleting it
+            var existingRecord = await CheckIfRecordExistsAsync(id);
+            if (existingRecord == null)
+            {
+                _logger.LogWarning($"{typeof(Role).Name} with ID: {id} not found for deletion.");
+                return false;
+            }
+            // Delete the entity from the repository and return the status
+            var isDeleted = await _baseRepository.DeleteAsync(existingRecord);
+            if (isDeleted)
+                _logger.LogInformation($"{typeof(Role).Name} with ID: {id} deleted successfully.");
+            else
+                _logger.LogWarning($"{typeof(Role).Name} with ID: {id} could not be deleted.");
+
+            return isDeleted;
+        }
+
+        /// <summary>
+        /// Retrieves a role by its name, and maps it to a RetrieveRoleDto.
+        /// </summary>
+        public async Task<RetrieveRoleDto?> GetRoleByName(string name)
+        {
+            // Check for null or empty name
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name), "Role name cannot be null or empty.");
+
+            // Fetch the role by name from the repository
+            var role = await _roleRepository.GetRoleByNameAsync(name);
+
+            // If role is found, map it to RetrieveRoleDto and return; otherwise, return null
+            return role == null ? null : _mapper.Map<RetrieveRoleDto>(role);
         }
     }
 }

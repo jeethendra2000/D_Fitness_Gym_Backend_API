@@ -18,6 +18,22 @@ namespace D_Fitness_Gym.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // ---------- Role ---------- //
+
+            // Make Role Name unique
+            modelBuilder.Entity<Role>()
+                .HasIndex(r => r.Name)
+                .IsUnique();
+
+            // Seeded Roles – Stable IDs
+            modelBuilder.Entity<Role>().HasData(
+                new Role { Id = Guid.Parse("11111111-1111-1111-1111-111111111111"), Name = "User" },
+                new Role { Id = Guid.Parse("22222222-2222-2222-2222-222222222222"), Name = "Trainer" },
+                new Role { Id = Guid.Parse("33333333-3333-3333-3333-333333333333"), Name = "Admin" }
+            );
+
+
+            // ---------- Account ---------- //
             // Make Email unique
             modelBuilder.Entity<Account>()
                 .HasIndex(u => u.Email)
@@ -28,31 +44,12 @@ namespace D_Fitness_Gym.Data
                 .Property(a => a.RoleId)
                 .HasDefaultValue(Guid.Parse("11111111-1111-1111-1111-111111111111")); // User role ID
             
-            // Seeded Roles – Stable IDs
-            modelBuilder.Entity<Role>().HasData(
-                new Role { Id = Guid.Parse("11111111-1111-1111-1111-111111111111"), Name = "User" },
-                new Role { Id = Guid.Parse("22222222-2222-2222-2222-222222222222"), Name = "Trainer" },
-                new Role { Id = Guid.Parse("33333333-3333-3333-3333-333333333333"), Name = "Admin" }
-            );
-
-            // Enum Conversion
-            modelBuilder.Entity<Transaction>()
-                .Property(t => t.Type)
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Transaction>()
-                .Property(t => t.Status)
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Subscription>()
-                .Property(s => s.Status)
-                .HasConversion<string>();
-
             // Default values for audit fields
             modelBuilder.Entity<Account>()
                 .Property(a => a.CreatedOn)
                 .HasDefaultValueSql("GETUTCDATE()");
 
+            // ---------- Transaction ---------- //
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.CreatedOn)
                 .HasDefaultValueSql("GETUTCDATE()");
@@ -65,10 +62,23 @@ namespace D_Fitness_Gym.Data
                         "([Type] <> 'SubscriptionPayment' AND [SubscriptionId] IS NULL)")
                 );
 
+            // ---------- Enum Conversion---------- //
+            modelBuilder.Entity<Transaction>()
+                .Property(t => t.Type)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Transaction>()
+                .Property(t => t.Status)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Subscription>()
+                .Property(s => s.Status)
+                .HasConversion<string>();
+
+
             // -------------------------
             // Relationships
             // -------------------------
-
             // Role -> Account relationship (1:N)
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.Role)

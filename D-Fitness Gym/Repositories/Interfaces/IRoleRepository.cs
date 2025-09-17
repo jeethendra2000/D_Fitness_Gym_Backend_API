@@ -1,14 +1,13 @@
 ﻿using D_Fitness_Gym.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace D_Fitness_Gym.Repositories.Interfaces
 {
     // Data access layer
-    public interface IRoleRepository
+    public interface IRoleRepository : IBaseRepository<Role>
     {
-        Task<IEnumerable<Role>> GetAllRolesAsync();
-        Task<Role?> GetRoleByIdAsync(Guid id);
-        Task<Role> CreateRoleAsync(Role role);
-        Task<Role?> UpdateRoleAsync(Role role);
-        Task<bool> DeleteRoleAsync(Guid id);
+        // Add role-specific methods here if needed
+        Task<Role?> GetRoleByNameAsync(string name);
+        
     }
 }
