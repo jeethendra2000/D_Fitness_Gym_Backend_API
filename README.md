@@ -1,8 +1,8 @@
-# D-Fitness Gym Web API
-
+# D-Fitness Gym Web API - [Live Demo](https://dfitnessgym.runasp.net/swagger/index.html)
 This is a **.NET 8 Web API** for managing a gym application including **Users, Trainers, Admins, Memberships, Subscriptions, and Transactions**. 
 The project uses **Entity Framework Core** for database access, follows a **layered architecture** with **Repositories, Services, and Controllers**, and supports **dependency injection** for maintainability.
 
+**Live Swagger Docs**: [Click here 👉 https://dfitnessgym.runasp.net/swagger/index.html](https://dfitnessgym.runasp.net/swagger/index.html)
 ---
 
 ## Table of Contents
@@ -96,7 +96,25 @@ DB_CONNECTION_STRING=Server=localhost;Database=D-FitnessDB;Trusted_Connection=Tr
 * The connection string is referenced in `Program.cs` via `DotNetEnv`.
 
 ---
+## Environment Variables
+Create a `.env` file in the root of the project and replace the placeholders `< >` with your actual values:
 
+```
+# Database connections
+
+# Local development connection (Windows Auth)
+LOCAL_DB_CONNECTION_STRING=Server=localhost;Database=D-FitnessDB;Trusted_Connection=True;
+
+# Production / Staging connection (SQL Auth, without encryption)
+DB_CONNECTION_STRING=Server=<yourServer>; Database=<yourDatabase>; User Id=<yourUserId>; Password=<yourPassword>; Encrypt=False; MultipleActiveResultSets=True;
+
+# Public/Cloud connection (with encryption + certificate trust)
+PUBLIC_DB_CONNECTION_STRING=Server=<yourServer>; Database=<yourDatabase>; User Id=<yourUserId>; Password=<yourPassword>; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;
+
+# Other secrets
+AUTO_MAPPER_LICENCE_KEY=<yourapikey> 
+```
+---
 ## Running the Project
 
 1. **Apply Migrations** (if database not created yet):
