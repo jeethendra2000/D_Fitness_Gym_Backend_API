@@ -11,9 +11,9 @@ namespace D_Fitness_Gym.Controllers
         private readonly IAccountService _accountService = accountService;
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAccounts()
+        public async Task<IActionResult> GetAllAccounts(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
         {
-            var allUsers = await _accountService.GetAllAsync();
+            var allUsers = await _accountService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize);
 
             return Ok(allUsers);
         }

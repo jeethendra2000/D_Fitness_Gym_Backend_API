@@ -28,6 +28,6 @@
     </ItemGroup>
 	
     <ItemGroup>
-      <ProjectReference Include="..\D-Fitness Gym\D_Fitness_Gym.csproj" />
+      <ProjectReference Include="..\D-Fitness Gym\D_Fitness_Gym.API.csproj" />
     </ItemGroup>
 </Project>

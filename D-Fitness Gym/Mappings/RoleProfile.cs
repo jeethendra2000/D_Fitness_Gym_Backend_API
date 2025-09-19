@@ -9,11 +9,11 @@ namespace D_Fitness_Gym.Mappings
         public RoleProfile()
         {
             // DTO → Entity
-            CreateMap<CreateRoleDto, Role>();
-            CreateMap<UpdateRoleDto, Role>();
+            CreateMap<CreateRoleDto, Role>().ReverseMap();
+            CreateMap<UpdateRoleDto, Role>().ReverseMap();
 
             // Entity → DTO
-            CreateMap<Role, RetrieveRoleDto>();
+            CreateMap<Role, RetrieveRoleDto>().ReverseMap();
         }
     }
 }

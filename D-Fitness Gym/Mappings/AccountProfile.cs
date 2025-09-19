@@ -9,11 +9,11 @@ namespace D_Fitness_Gym.Mappings
         public AccountProfile()
         {
             // DTO → Entity
-            CreateMap<CreateAccountDto, Account>();
-            CreateMap<UpdateAccountDto, Account>();
+            CreateMap<CreateAccountDto, Account>().ReverseMap();
+            CreateMap<UpdateAccountDto, Account>().ReverseMap();
 
             // Entity → DTO
-            CreateMap<Account, RetrieveAccountDto>();
+            CreateMap<Account, RetrieveAccountDto>().ReverseMap();
         }
     }
 }

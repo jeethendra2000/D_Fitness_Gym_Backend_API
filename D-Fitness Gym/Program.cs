@@ -60,8 +60,9 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure EF Core with connection string from appsettings.json
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultSQLConnection");
+// Configure EF Core with the correct connection string based on the environment (appsettings.json or .env)
+var connectionString = builder.Environment.IsDevelopment() ? builder.Configuration.GetConnectionString("DefaultSQLConnection") : Environment.GetEnvironmentVariable("PUBLIC_DB_CONNECTION_STRING");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -71,7 +72,7 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || true)
 {
     app.UseSwagger();
     app.UseSwaggerUI();

@@ -1,6 +1,9 @@
 ﻿using D_Fitness_Gym.Data;
 using D_Fitness_Gym.Repositories.Interfaces;
+using D_Fitness_Gym.Utils;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace D_Fitness_Gym.Repositories
 {
@@ -13,12 +16,26 @@ namespace D_Fitness_Gym.Repositories
     {
         // Initializes the ApplicationDbContext to interact with the database, Throw an exception if the dbContext is null to ensure valid initialization
         protected readonly ApplicationDbContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-
+        
         /// <summary>
         ///  Retrieves all records of corresponding Entity Type.
         /// </summary>
         /// <returns>A list of all records of corresponding Entity Type</returns>
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync() => await _dbContext.Set<TEntity>().ToListAsync();
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
+        {
+            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+            // Apply filtering if provided
+            query = DynamicFilterHelper.ApplyFiltering(query, filterOn, filterBy);
+
+            // Apply sorting if provided
+            query = DynamicSortingHelper.ApplySorting(query, sortOn, isAscending);
+
+            // Apply pagination if provided
+            query = PaginationHelper.ApplyPagination(query, pageNo, pageSize);
+
+            return await query.ToListAsync();
+        }
 
         /// <summary>
         /// Retrieves a single entity by its unique identifier.

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36429.23 d17.14
+VisualStudioVersion = 17.14.36429.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Fitness_Gym", "D-Fitness Gym\D_Fitness_Gym.csproj", "{77694AEA-85D1-46B0-BFC8-097B5BBD0549}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Fitness_Gym.API", "D-Fitness Gym\D_Fitness_Gym.API.csproj", "{77694AEA-85D1-46B0-BFC8-097B5BBD0549}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Fitness_Gym.Tests", "D_Fitness_Gym.Tests\D_Fitness_Gym.Tests.csproj", "{44B7D207-E0B6-45B9-84D4-B30E6A5A9CEE}"
 EndProject

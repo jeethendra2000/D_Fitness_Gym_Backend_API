@@ -1,4 +1,5 @@
-﻿using D_Fitness_Gym.Models.DTO.RoleDto;
+﻿using D_Fitness_Gym.CustomActionFilters;
+using D_Fitness_Gym.Models.DTO.RoleDto;
 using D_Fitness_Gym.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +15,9 @@ namespace D_Fitness_Gym.Controllers
         /// Retrieves all roles.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAllRoles()
+        public async Task<IActionResult> GetAllRoles(string? filterOn, string?filterBy, string?sortOn, bool? isAscending, int?pageNo, int?pageSize)
         {
-            var allRoles = await _roleService.GetAllAsync();
+            var allRoles = await _roleService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize);
 
             if (allRoles == null || !allRoles.Any())
                 return NoContent(); // Return 204 if no roles are found
@@ -59,11 +60,9 @@ namespace D_Fitness_Gym.Controllers
         /// Creates a new role.
         /// </summary>
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateRole(CreateRoleDto roleDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState); // Return 400 if the model is invalid
-
             var role = await _roleService.CreateAsync(roleDto);
 
             // Return 201 with the created role
@@ -74,11 +73,9 @@ namespace D_Fitness_Gym.Controllers
         /// Updates an existing role.
         /// </summary>
         [HttpPut("{id:guid}")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateRole(Guid id, UpdateRoleDto roleDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState); // Return 400 if the model is invalid
-
             var role = await _roleService.UpdateAsync(id, roleDto); // Return 404 if the role was not found
 
             if (role == null)

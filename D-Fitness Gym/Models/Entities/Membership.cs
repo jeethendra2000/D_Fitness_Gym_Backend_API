@@ -9,7 +9,7 @@
         public string? Description { get; set; }
 
         // Relationship / Navigation Properties
-        public List<Subscription>? Subscriptions { get; set; }
+        public List<Subscription> Subscriptions { get; set; } = [];
 
     }
 }

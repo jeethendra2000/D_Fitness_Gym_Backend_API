@@ -15,8 +15,8 @@ namespace D_Fitness_Gym.Models.Entities
         public required string PasswordHash { get; set; }
         public required string PhoneNumber { get; set; }
         public string? Address { get; set; }
-        public DateOnly? DateOfBirth { get; set; }
-        public Gender? Gender { get; set; }
+        public DateOnly DateOfBirth { get; set; }
+        public Gender Gender { get; set; }
         public string? Description { get; set; }
         public DateOnly JoinedDate { get; set; }
 
@@ -26,7 +26,7 @@ namespace D_Fitness_Gym.Models.Entities
         public Guid RoleId { get; set; }
 
         // Relationship / Navigation Properties
-        public Role? Role { get; set; }
+        public Role Role { get; set; }
         public List<Transaction> TransactionsAsPayer { get; set; } = [];
         public List<Transaction> TransactionsAsPayee { get; set; } = [];
     }

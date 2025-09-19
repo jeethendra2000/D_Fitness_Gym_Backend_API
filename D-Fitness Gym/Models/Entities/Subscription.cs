@@ -5,8 +5,8 @@ namespace D_Fitness_Gym.Models.Entities
     public class Subscription
     {
         public Guid Id { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public SubscriptionStatus Status { get; set; } = SubscriptionStatus.Inactive;
 
         // Foreign Key
@@ -14,8 +14,8 @@ namespace D_Fitness_Gym.Models.Entities
         public Guid MembershipId { get; set; }
 
         // Relationship / Navigation Properties
-        public User? User { get; set; }
-        public Membership? Membership { get; set; }
-        public List<Transaction>? Transactions { get; set; }
+        public User User { get; set; }
+        public Membership Membership { get; set; }
+        public List<Transaction> Transactions { get; set; } = [];
     }
 }
