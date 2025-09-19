@@ -1,10 +1,8 @@
-﻿# D_Fitness_Gym_Backend_API
-
-# D-Fitness Gym Web API
-
+# D-Fitness Gym Web API - [Live Demo](https://dfitnessgym.runasp.net/swagger/index.html)
 This is a **.NET 8 Web API** for managing a gym application including **Users, Trainers, Admins, Memberships, Subscriptions, and Transactions**. 
 The project uses **Entity Framework Core** for database access, follows a **layered architecture** with **Repositories, Services, and Controllers**, and supports **dependency injection** for maintainability.
 
+**Live Swagger Docs**: [Click here 👉 https://dfitnessgym.runasp.net/swagger/index.html](https://dfitnessgym.runasp.net/swagger/index.html)
 ---
 
 ## Table of Contents
@@ -98,7 +96,25 @@ DB_CONNECTION_STRING=Server=localhost;Database=D-FitnessDB;Trusted_Connection=Tr
 * The connection string is referenced in `Program.cs` via `DotNetEnv`.
 
 ---
+## Environment Variables
+Create a `.env` file in the root of the project and replace the placeholders `< >` with your actual values:
 
+```
+# Database connections
+
+# Local development connection (Windows Auth)
+LOCAL_DB_CONNECTION_STRING=Server=localhost;Database=D-FitnessDB;Trusted_Connection=True;
+
+# Production / Staging connection (SQL Auth, without encryption)
+DB_CONNECTION_STRING=Server=<yourServer>; Database=<yourDatabase>; User Id=<yourUserId>; Password=<yourPassword>; Encrypt=False; MultipleActiveResultSets=True;
+
+# Public/Cloud connection (with encryption + certificate trust)
+PUBLIC_DB_CONNECTION_STRING=Server=<yourServer>; Database=<yourDatabase>; User Id=<yourUserId>; Password=<yourPassword>; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;
+
+# Other secrets
+AUTO_MAPPER_LICENCE_KEY=<yourapikey> 
+```
+---
 ## Running the Project
 
 1. **Apply Migrations** (if database not created yet):
@@ -124,19 +140,44 @@ EntityFrameworkCore\update-database
 ```
 D-Fitness-Gym/
 │
-├─ Controllers/       # API controllers
-├─ Services/          # Business logic
-├─ Repositories/      # Database operations
-├─ Data/              # ApplicationDbContext & migrations
+├─ Controllers/             # API endpoints / controllers
+├─ Services/                # Business logic layer
+│   └─ Interfaces/          # Interfaces for services
+├─ Repositories/            # Data access layer for Database operations
+│   └─ Interfaces/          # Interfaces for repositories
+├─ Data/                    # ApplicationDbContext, seeding, EF migrations
+├─ Middleware/              # Custom middlewares (e.g. error handling, logging)
+├─ Mappings/                # AutoMapper profiles
 ├─ Models/
-│   ├─ Entities/      # EF Core entity models
-│   ├─ DTO/           # Data transfer objects
-│   └─ Enums/		  # Enum fields
+│   ├─ Entities/            # EF Core entities (Account, Role, Subscription, etc.)
+│   ├─ DTO/                 # DTOs for API communication
+│   │   ├─ AccountDto/
+│   │   └─ RoleDto/
+│   └─ Enums/               # Enum definitions
+├─ Utils/                   # Helper classes (extensions, constants, etc.)
+├─ Properties/              # Assembly info
+├─ Migrations/              # EF Core migrations (optional inside Data/)
 ├─ D-Fitness-Gym.sln
 ├─ Program.cs
+├─ Startup.cs               # (optional, if you prefer instead of Program.cs)
 ├─ appsettings.json
-├─ .env
+├─ appsettings.Development.json
+├─ appsettings.Production.json
+├─ .env                     # Env vars (connection strings, secrets)
+├─ .gitignore
 └─ README.md
+```
+## Folder Structure For Test
+```
+D_Fitness_Gym.Tests/
+│
+├─ Controllers/             # Unit tests for controllers
+├─ Services/                # Unit tests for services
+├─ Repositories/            # Unit tests for repositories
+├─ TestHelpers/             # Test utils (mock data, in-memory DB, etc.)
+│
+├─ D_Fitness_Gym.Tests.csproj
+└─ appsettings.Test.json
 ```
 
 ---
