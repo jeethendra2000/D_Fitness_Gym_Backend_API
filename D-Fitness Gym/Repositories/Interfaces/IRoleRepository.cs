@@ -7,7 +7,6 @@ namespace D_Fitness_Gym.Repositories.Interfaces
     public interface IRoleRepository : IBaseRepository<Role>
     {
         // Add role-specific methods here if needed
-        Task<Role?> GetRoleByNameAsync(string name);
         
     }
 }

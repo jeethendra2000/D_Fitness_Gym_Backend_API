@@ -1,4 +1,5 @@
 ﻿using D_Fitness_Gym.Models.Entities;
+using D_Fitness_Gym.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace D_Fitness_Gym.Data
@@ -51,6 +52,14 @@ namespace D_Fitness_Gym.Data
             modelBuilder.Entity<Account>()
                 .Property(a => a.CreatedOn)
                 .HasDefaultValueSql("GETUTCDATE()");
+
+            // Configure the gender property to be stored as a string
+            modelBuilder.Entity<Account>()
+                .Property(a => a.Gender)
+                .HasConversion(
+                    a => a.ToString(),        // Convert enum to string when saving
+                    a => Enum.Parse<Gender>(a) // Convert string back to enum when loading
+                );
 
             // ---------- Transaction ---------- //
             modelBuilder.Entity<Transaction>()

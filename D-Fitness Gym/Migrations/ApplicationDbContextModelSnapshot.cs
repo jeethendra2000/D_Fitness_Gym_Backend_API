@@ -36,7 +36,7 @@ namespace D_Fitness_Gym.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<DateOnly?>("DateOfBirth")
+                    b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
 
                     b.Property<string>("Description")
@@ -55,8 +55,9 @@ namespace D_Fitness_Gym.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Gender")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("JoinedDate")
                         .HasColumnType("date");
@@ -137,7 +138,7 @@ namespace D_Fitness_Gym.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            Name = "User"
+                            Name = "Admin"
                         },
                         new
                         {
@@ -147,7 +148,7 @@ namespace D_Fitness_Gym.Migrations
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            Name = "Admin"
+                            Name = "User"
                         });
                 });
 
@@ -157,13 +158,13 @@ namespace D_Fitness_Gym.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("MembershipId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
@@ -260,16 +261,16 @@ namespace D_Fitness_Gym.Migrations
                 {
                     b.HasBaseType("D_Fitness_Gym.Models.Entities.Account");
 
-                    b.Property<double?>("Height")
+                    b.Property<double>("Height")
                         .HasColumnType("float");
 
-                    b.Property<Guid?>("TrainerId")
+                    b.Property<Guid>("TrainerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("TrainerRequired")
                         .HasColumnType("bit");
 
-                    b.Property<double?>("Weight")
+                    b.Property<double>("Weight")
                         .HasColumnType("float");
 
                     b.HasIndex("TrainerId");
@@ -338,7 +339,8 @@ namespace D_Fitness_Gym.Migrations
                     b.HasOne("D_Fitness_Gym.Models.Entities.Trainer", "Trainer")
                         .WithMany("Users")
                         .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Trainer");
                 });

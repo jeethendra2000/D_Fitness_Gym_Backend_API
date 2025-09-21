@@ -2,8 +2,6 @@
 using D_Fitness_Gym.Repositories.Interfaces;
 using D_Fitness_Gym.Utils;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace D_Fitness_Gym.Repositories
 {

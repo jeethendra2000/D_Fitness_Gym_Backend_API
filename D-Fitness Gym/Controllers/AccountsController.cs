@@ -1,4 +1,5 @@
 ﻿using D_Fitness_Gym.Models.DTO.AccountDto;
+using D_Fitness_Gym.Services;
 using D_Fitness_Gym.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,12 +9,18 @@ namespace D_Fitness_Gym.Controllers
     [ApiController]
     public class AccountsController(IAccountService accountService) : ControllerBase
     {
-        private readonly IAccountService _accountService = accountService;
+        private readonly IAccountService _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
 
+        /// <summary>
+        /// Retrieves all accounts.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAllAccounts(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
         {
             var allUsers = await _accountService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize);
+
+            if(allUsers == null || !allUsers.Any()) 
+                   return NoContent();
 
             return Ok(allUsers);
         }

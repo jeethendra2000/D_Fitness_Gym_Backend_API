@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 
 namespace D_Fitness_Gym.Utils
 {
@@ -9,118 +10,85 @@ namespace D_Fitness_Gym.Utils
         /// </summary>
         public static Expression<Func<TEntity, bool>> BuildFilterExpression<TEntity>(string filterOn, string filterBy) where TEntity : class
         {
+            // Use reflection to Validate if the 'filterOn' is a valid property of the entity
+            var propertyInfo = RepositoryHelper.GetPropertyInfo<TEntity>(filterOn);
+
             var parameter = Expression.Parameter(typeof(TEntity), "e");
             var property = Expression.Property(parameter, filterOn);
             var filterValue = Expression.Constant(filterBy);
 
-            // Use reflection to get the property info
-            var propertyInfo = RepositoryHelper.GetPropertyInfo<TEntity>(filterOn);
-
-            // Create a filter expression based on the property type
-            // Switch on the property type to build the correct filter expression
+            // Create a filter expression based on the property type to build the correct filter expression
             Expression filterExpression = propertyInfo.PropertyType switch
             {
                 Type t when t == typeof(string) => BuildStringFilterExpression(property, filterValue),
                 Type t when t == typeof(int) => BuildNumericFilterExpression<int>(property, filterValue),
                 Type t when t == typeof(decimal) => BuildNumericFilterExpression<decimal>(property, filterValue),
-                Type t when t == typeof(DateTime) => BuildDateTimeFilterExpression(property, filterValue),
+                Type t when t == typeof(DateTime) => BuildDateTimeFilterExpression<DateTime>(property, filterValue),
+                Type t when t == typeof(DateOnly) => BuildDateTimeFilterExpression<DateOnly>(property, filterValue),
+                Type t when t == typeof(TimeOnly) => BuildDateTimeFilterExpression<TimeOnly>(property, filterValue),
+                Type t when t.IsEnum => BuildEnumFilterExpression(property, filterValue, propertyInfo.PropertyType),
                 Type t when t == typeof(bool) => BuildBoolFilterExpression(property, filterValue),
-                _ => BuildDefaultFilterExpression(property, filterValue) // Default case for unsupported types
+                _ => throw new InvalidOperationException($"Filtering on {filterOn} is not supported.") // Default case for unsupported types
             };
 
             // Return the expression as a lambda
             return Expression.Lambda<Func<TEntity, bool>>(filterExpression, parameter);
         }
 
-        #region Type-Specific Filter Builders
-
+        #region Type-Specific Filter Expression Builders
+        
         /// <summary>
         /// Build a filter expression for string properties.
         /// </summary>
-        //public static Expression<Func<TEntity, bool>> BuildStringFilterExpression<TEntity, TProperty>(string filterOn, string filterBy) where TEntity : class
-        //{
-        //    (NEED FIX) 
-        //    var parameter = Expression.Parameter(typeof(TEntity), "e");
-        //    var property = Expression.Property(parameter, filterOn);
-        //    var filterValue = Expression.Constant(Convert.ChangeType(filterBy, typeof(TProperty)));
-        //    var equalExpression = Expression.Equal(property, filterValue);
-
-        //    // For string properties, use Contains with case-insensitivity
-        //    return Expression.Lambda<Func<TEntity, bool>>(equalExpression, parameter);
-        //}
+        private static Expression BuildStringFilterExpression(MemberExpression property, ConstantExpression filterValue)
+        {
+            return Expression.Call(property, "Contains", null, Expression.Call(filterValue, "ToLower", null));
+        }
 
         /// <summary>
         /// Build a numeric filter expression for int and decimal properties.
         /// </summary>
-        public static Expression<Func<TEntity, bool>> BuildNumericFilterExpression<TEntity, TProperty>(string filterOn, string filterBy) where TEntity : class
+        private static Expression BuildNumericFilterExpression<TPropertyType>(MemberExpression property, ConstantExpression filterValue)
         {
-            var parameter = Expression.Parameter(typeof(TEntity), "e");
-            var property = Expression.Property(parameter, filterOn);
-            var filterValue = Expression.Constant(Convert.ChangeType(filterBy, typeof(TProperty)));
-
-            var equalExpression = Expression.Equal(property, filterValue);
-
-            return Expression.Lambda<Func<TEntity, bool>>(equalExpression, parameter);
+            return Expression.Equal(property, Expression.Convert(filterValue, typeof(TPropertyType)));
         }
 
         /// <summary>
         /// Build a DateTime filter expression.
         /// </summary>
-        public static Expression<Func<TEntity, bool>> BuildDateTimeFilterExpression<TEntity>(string filterOn, string filterBy) where TEntity : class
+        private static Expression BuildDateTimeFilterExpression<TPropertyType>(MemberExpression property, ConstantExpression filterValue)
         {
-            var parameter = Expression.Parameter(typeof(TEntity), "e");
-            var property = Expression.Property(parameter, filterOn);
-            var filterValue = Expression.Constant(DateTime.Parse(filterBy));
-
-            var equalExpression = Expression.Equal(property, filterValue);
-
-            return Expression.Lambda<Func<TEntity, bool>>(equalExpression, parameter);
+            var filterValueParsed = Expression.Call(typeof(TPropertyType).GetMethod("Parse", [typeof(string)]), filterValue); // Assuming the filterValue is a string
+            var filterValueConverted = Expression.Convert(filterValueParsed, typeof(TPropertyType));
+            return Expression.Equal(property, filterValueConverted);
         }
 
         /// <summary>
+        /// Build an enum filter expression.
+        /// </summary>
+        private static Expression BuildEnumFilterExpression(MemberExpression property, ConstantExpression filterValue, Type enumType)
+        {
+            // Convert the filter value to string and normalize case (e.g., to upper case)
+            var filterValueString = Expression.Convert(filterValue, typeof(string));
+            var filterValueToUpper = Expression.Call(filterValueString, "ToUpper", Type.EmptyTypes);
+
+            // Get the Enum.Parse method (ignoring case)
+            var enumParseMethod = typeof(Enum).GetMethod("Parse", [typeof(Type), typeof(string), typeof(bool)]);
+
+            // Create a call to Enum.Parse
+            var enumParseCall = Expression.Call(null, enumParseMethod, Expression.Constant(enumType), filterValueToUpper, Expression.Constant(true));
+
+            // Compare the property value to the parsed enum value
+            var equalityExpression = Expression.Equal(property, Expression.Convert(enumParseCall, property.Type));
+
+            return equalityExpression;
+        }
+        /// <summary>
         /// Build a Boolean filter expression.
         /// </summary>
-        public static Expression<Func<TEntity, bool>> BuildBoolFilterExpression<TEntity>(string filterOn, string filterBy) where TEntity : class
-        {
-            var parameter = Expression.Parameter(typeof(TEntity), "e");
-            var property = Expression.Property(parameter, filterOn);
-            var filterValue = Expression.Constant(Convert.ToBoolean(filterBy));
-
-            var equalExpression = Expression.Equal(property, filterValue);
-
-            return Expression.Lambda<Func<TEntity, bool>>(equalExpression, parameter);
-        }
-
-        private static Expression BuildStringFilterExpression(MemberExpression property, ConstantExpression filterValue)
-        {
-            // For string properties, use Contains with case-insensitivity
-            return Expression.Call(property, "Contains", null, Expression.Call(filterValue, "ToLower", null));
-        }
-
-        private static Expression BuildNumericFilterExpression<TProperty>(MemberExpression property, ConstantExpression filterValue)
-        {
-            // For numeric properties (int, decimal), perform equality check
-            return Expression.Equal(property, Expression.Convert(filterValue, typeof(TProperty)));
-        }
-
-        private static Expression BuildDateTimeFilterExpression(MemberExpression property, ConstantExpression filterValue)
-        {
-            // For DateTime properties, parse and compare
-            return Expression.Equal(property, Expression.Convert(filterValue, typeof(DateTime)));
-        }
-
         private static Expression BuildBoolFilterExpression(MemberExpression property, ConstantExpression filterValue)
         {
-            // For Boolean properties, perform equality check
             return Expression.Equal(property, Expression.Convert(filterValue, typeof(bool)));
-        }
-
-        private static Expression BuildDefaultFilterExpression(MemberExpression property, ConstantExpression filterValue)
-        {
-            // For unsupported types, convert to string and use Contains
-            var toStringMethod = property.Type.GetMethod("ToString");
-            var toStringCall = Expression.Call(property, toStringMethod);
-            return Expression.Call(toStringCall, "Contains", null, Expression.Call(filterValue, "ToLower", null));
         }
 
         #endregion

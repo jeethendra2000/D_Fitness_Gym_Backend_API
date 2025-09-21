@@ -44,21 +44,5 @@ namespace D_Fitness_Gym.Services
 
             return isDeleted;
         }
-
-        /// <summary>
-        /// Retrieves a role by its name, and maps it to a RetrieveRoleDto.
-        /// </summary>
-        public async Task<RetrieveRoleDto?> GetRoleByName(string name)
-        {
-            // Check for null or empty name
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException(nameof(name), "Role name cannot be null or empty.");
-
-            // Fetch the role by name from the repository
-            var role = await _roleRepository.GetRoleByNameAsync(name);
-
-            // If role is found, map it to RetrieveRoleDto and return; otherwise, return null
-            return role == null ? null : _mapper.Map<RetrieveRoleDto>(role);
-        }
     }
 }

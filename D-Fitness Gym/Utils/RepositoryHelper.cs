@@ -9,7 +9,7 @@ namespace D_Fitness_Gym.Utils
             // Use reflection to retrieve property information
             var propertyInfo = typeof(TEntity).GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
             
-            return propertyInfo ?? throw new ArgumentException($"Property '{propertyName}' is not a valid field of {typeof(TEntity).Name}.");
+            return propertyInfo ?? throw new ArgumentException($"Property '{propertyName}' not found on entity {typeof(TEntity).Name}.");
         }
     }
 }

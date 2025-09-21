@@ -9,7 +9,5 @@ namespace D_Fitness_Gym.Repositories
     public class RoleRepository(ApplicationDbContext dbContext) : BaseRepository<Role>(dbContext), IRoleRepository
     {
         // Role-specific methods can be added here
-        // Querying by a unique Name (non-primary key field) using FirstOrDefaultAsync
-        public async Task<Role?> GetRoleByNameAsync(string name) => await _dbContext.Roles.FirstOrDefaultAsync(role => role.Name == name);
     }
 }

@@ -42,21 +42,6 @@ namespace D_Fitness_Gym.Controllers
         }
 
         /// <summary>
-        /// Retrieves a role by its name
-        /// </summary>
-        [HttpGet("{name}")]
-        public async Task<IActionResult> GetRoleByName(string name)
-        {
-            var role = await _roleService.GetRoleByName(name);
-
-            if (role == null)
-                return NotFound(); // Return 404 if the role is not found
-
-            // Return 200 with the found role
-            return Ok(role);
-        }
-
-        /// <summary>
         /// Creates a new role.
         /// </summary>
         [HttpPost]

@@ -9,23 +9,12 @@ namespace D_Fitness_Gym.Utils
             if (string.IsNullOrEmpty(sortOn)) return query;
 
             // Validate if the 'filterOn' is a valid property of the entity
-            var propertyInfo = RepositoryHelper.GetPropertyInfo<TEntity>(sortOn);   
-            
-            // Sort based on the property type
-            if (propertyInfo.PropertyType == typeof(string))
-            {
-                query = isAscending.HasValue && isAscending.Value
-                    ? query.OrderBy(e => EF.Property<string>(e, sortOn))
-                    : query.OrderByDescending(e => EF.Property<string>(e, sortOn));
-            }
-            else
-            {
-                query = isAscending.HasValue && isAscending.Value
-                    ? query.OrderBy(e => EF.Property<object>(e, sortOn))
-                    : query.OrderByDescending(e => EF.Property<object>(e, sortOn));
-            }
+            var propertyInfo = RepositoryHelper.GetPropertyInfo<TEntity>(sortOn);
 
-            return query;
+            // Sort based on the property type
+            return query = isAscending.HasValue && isAscending.Value
+                    ? query.OrderBy(e => EF.Property<object>(e, propertyInfo.Name))
+                    : query.OrderByDescending(e => EF.Property<object>(e, propertyInfo.Name)); ;
         }
     }
 }
