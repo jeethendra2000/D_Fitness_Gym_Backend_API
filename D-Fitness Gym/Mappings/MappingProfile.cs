@@ -7,9 +7,7 @@ namespace D_Fitness_Gym.Mappings
     public class MappingProfile : Profile
     {
         public MappingProfile() {
-            CreateMap<CreateAccountDto, Account>();
-            CreateMap<UpdateAccountDto, Account>();
-            CreateMap<Account, RetrieveAccountDto>();
+            
         }
     }
 }

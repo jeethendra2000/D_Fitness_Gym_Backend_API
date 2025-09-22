@@ -21,7 +21,7 @@ namespace D_Fitness_Gym.Controllers
             //string[]? includes = ["Role"];
             var allUsers = await _accountService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize, includes);
 
-            if(allUsers == null || !allUsers.Any()) 
+            if(allUsers == null || !allUsers.Data.Any()) 
                    return NoContent();
 
             return Ok(allUsers);
