@@ -1,6 +1,11 @@
 ﻿using AutoMapper;
 using D_Fitness_Gym.Models.DTO.AccountDto;
+using D_Fitness_Gym.Models.DTO.MembershipDto;
 using D_Fitness_Gym.Models.DTO.PaginationDto;
+using D_Fitness_Gym.Models.DTO.SubscriptionDto;
+using D_Fitness_Gym.Models.DTO.TrainerDto;
+using D_Fitness_Gym.Models.DTO.TransactionDto;
+using D_Fitness_Gym.Models.DTO.UserDto;
 using D_Fitness_Gym.Models.Entities;
 
 namespace D_Fitness_Gym.Mappings
@@ -11,6 +16,11 @@ namespace D_Fitness_Gym.Mappings
         {
             // Map inner entities to their DTOs
             CreateMap<Account, RetrieveAccountDto>().ReverseMap();
+            CreateMap<User, RetrieveUserDto>().ReverseMap();
+            CreateMap<Subscription, RetrieveSubscriptionDto>().ReverseMap();
+            CreateMap<Membership, RetrieveMembershipDto>().ReverseMap();
+            CreateMap<Trainer, RetrieveTrainerDto>().ReverseMap();
+            CreateMap<Transaction, RetrieveTransactionDto>().ReverseMap();
 
             // Map PaginationMetadata<TSource> to RetrievePaginationDto<TDestination>
             // Tell AutoMapper to map inner generic types using the existing map
@@ -20,7 +30,6 @@ namespace D_Fitness_Gym.Mappings
 
             CreateMap(typeof(RetrievePaginationDto<>), typeof(RetrievePaginationDto<>))
                 .ConvertUsing(typeof(RetrievePaginationDtoConverter<,>));
-
         }
     }
 

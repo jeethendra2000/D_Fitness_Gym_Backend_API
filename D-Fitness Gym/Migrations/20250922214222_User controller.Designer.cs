@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace D_Fitness_Gym.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250921150151_Initial Migrations")]
-    partial class InitialMigrations
+    [Migration("20250922214222_User controller")]
+    partial class Usercontroller
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,8 +58,9 @@ namespace D_Fitness_Gym.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("JoinedDate")
                         .HasColumnType("date");

@@ -7,6 +7,7 @@ using D_Fitness_Gym.Services;
 using D_Fitness_Gym.Services.Interfaces;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,19 +28,39 @@ builder.Services.AddAutoMapper(typeof(AccountProfile).Assembly);
 
 
 // Register Controller
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+});
 
-// Register Repositories
+// Register Account Services & Repositories (Scoped = one per request)
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-
-// Register Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 
-// Register Services
+// Register Role Services & Repositories
 builder.Services.AddScoped<IRoleService, RoleService>();
-
-// Register Repositories (Scoped = one per request)
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
+// Register User Services & Repositories
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Register Subscription Services & Repositories
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+
+// Register Trainer Services & Repositories
+builder.Services.AddScoped<ITrainerService, TrainerService>();
+builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
+
+// Register Membership Services & Repositories
+builder.Services.AddScoped<IMembershipService, MembershipService>();
+builder.Services.AddScoped<IMembershipRepository, MembershipRepository>();
+
+// Register Transaction Services & Repositories
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 //// Register Repositories dynamically
 ///Install Scrutor NuGet package and then use this
