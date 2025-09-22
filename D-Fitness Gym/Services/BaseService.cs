@@ -26,11 +26,16 @@ namespace D_Fitness_Gym.Services
         /// Retrieves all entities from the repository and maps them to the retrieval DTO.
         /// </summary>
         /// <returns>A collection of TRetrieveDto objects</returns>
-        public virtual async Task<IEnumerable<TRetrieveDto>> GetAllAsync(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
+        public virtual async Task<IEnumerable<TRetrieveDto>> GetAllAsync(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize, string[]? includes = null)
         {
             // Fetch all entities from the repository
             _logger.LogInformation($"Fetching all {typeof(TEntity).Name} entities.");
-            var entities = await _baseRepository.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize);
+
+            if (includes != null && includes.Length != 0)
+            {
+                _logger.LogInformation($"Including navigation properties: {string.Join(", ", includes)}");
+            }
+            var entities = await _baseRepository.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize, includes);
 
             // Map the entities to the retrieval DTO and return
             _logger.LogInformation($"{entities.Count()} {typeof(TEntity).Name} entities fetched.");

@@ -19,9 +19,18 @@ namespace D_Fitness_Gym.Repositories
         ///  Retrieves all records of corresponding Entity Type.
         /// </summary>
         /// <returns>A list of all records of corresponding Entity Type</returns>
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize, string[]? includes = null)
         {
             IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+            // Dynamically include navigation properties
+            if (includes != null)
+            {
+                foreach (var includeProperty in includes)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
 
             // Apply filtering if provided
             query = DynamicFilterHelper.ApplyFiltering(query, filterOn, filterBy);

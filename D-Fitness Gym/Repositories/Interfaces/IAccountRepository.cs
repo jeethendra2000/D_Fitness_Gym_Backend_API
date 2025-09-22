@@ -1,5 +1,4 @@
-﻿using D_Fitness_Gym.Models.DTO.AccountDto;
-using D_Fitness_Gym.Models.Entities;
+﻿using D_Fitness_Gym.Models.Entities;
 
 namespace D_Fitness_Gym.Repositories.Interfaces
 {

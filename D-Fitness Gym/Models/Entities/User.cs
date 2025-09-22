@@ -9,7 +9,7 @@
         // Foreign Key
         public Guid TrainerId {  get; set; }
 
-        // Relationship / Navigation Properties
+        // Navigation Properties
         public Trainer Trainer { get; set; } = null!;
         public List<Subscription> Subscriptions { get; set; }
     }
