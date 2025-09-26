@@ -1,6 +1,7 @@
 ﻿using D_Fitness_Gym.CustomActionFilters;
 using D_Fitness_Gym.Models.DTO.SubscriptionDto;
 using D_Fitness_Gym.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace D_Fitness_Gym.Controllers
@@ -16,6 +17,7 @@ namespace D_Fitness_Gym.Controllers
         /// Retrieves all Subscriptions.
         /// </summary>
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllSubscriptions(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize, [FromQuery] string[]? includes)
         {
             var allSubscriptions = await _subscriptionService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize, includes);
@@ -27,6 +29,7 @@ namespace D_Fitness_Gym.Controllers
         }
 
         [HttpGet("{id:guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetSubscriptionById(Guid id)
         {
             var subscription = await _subscriptionService.GetByIdAsync(id);
@@ -39,6 +42,7 @@ namespace D_Fitness_Gym.Controllers
 
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateSubscription(CreateSubscriptionDto createSubscriptionDto)
         {
             var subscription = await _subscriptionService.CreateAsync(createSubscriptionDto);
@@ -48,6 +52,7 @@ namespace D_Fitness_Gym.Controllers
 
         [HttpPatch("{id:guid}")]
         [ValidateModel]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateSubscription(Guid id, UpdateSubscriptionDto updateSubscriptionDto)
         {
             var subscription = await _subscriptionService.UpdateAsync(id, updateSubscriptionDto);
@@ -59,6 +64,7 @@ namespace D_Fitness_Gym.Controllers
         }
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteSubscription(Guid id)
         {
             try

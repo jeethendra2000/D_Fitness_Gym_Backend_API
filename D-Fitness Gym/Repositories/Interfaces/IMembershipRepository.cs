@@ -6,5 +6,6 @@ namespace D_Fitness_Gym.Repositories.Interfaces
     {
         // Membership-specific methods can be added here
 
+
     }
 }

@@ -26,10 +26,7 @@ namespace D_Fitness_Gym.Data
                 .HasIndex(r => r.Name)
                 .IsUnique();
 
-            // Seeded Roles – Stable IDs 
-            //[66dc234b-d616-442b-baec-cef239155cf7] // Random Id's (If required)
-            //[de4b7405-63f1-4f77-876e-3173fa8d6b86]
-            //[82f0976e-66d3-4f9b-b657-f2265cd323ce]
+            // Seeded Roles – Stable IDs
             modelBuilder.Entity<Role>().HasData(
                 new Role { Id = Guid.Parse("11111111-1111-1111-1111-111111111111"), Name = "Admin" },
                 new Role { Id = Guid.Parse("22222222-2222-2222-2222-222222222222"), Name = "Trainer" },
