@@ -1,6 +1,6 @@
 ﻿namespace D_Fitness_Gym.Models.DTO.PaginationDto
 {
-    public class PaginationMetadata<T>
+    public class RetrievePaginationDto<T>
     {
         public IEnumerable<T> Data { get; set; }
         public int TotalCount { get; set; }

@@ -1,6 +1,7 @@
 ﻿using D_Fitness_Gym.Models.DTO.RoleDto;
 using D_Fitness_Gym.Models.Entities;
 using D_Fitness_Gym.Models.Enums;
+using System.Text.Json.Serialization;
 
 namespace D_Fitness_Gym.Models.DTO.AccountDto
 {
@@ -17,8 +18,9 @@ namespace D_Fitness_Gym.Models.DTO.AccountDto
         public string? Description { get; set; }
         public DateOnly JoinedDate { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
-        public Guid RoleId { get; set; }
 
-        public RetrieveRoleDto RetrieveRoleDto { get; set; }
+        // Navigation Property
+        //[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] // If Role is null, the serialized JSON will simply omit the role property instead of showing "role": null.
+        public RetrieveRoleDto Role { get; set; }
     }
 }

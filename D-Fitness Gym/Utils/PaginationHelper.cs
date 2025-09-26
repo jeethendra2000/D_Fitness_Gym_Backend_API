@@ -1,4 +1,5 @@
 ﻿using D_Fitness_Gym.Models.DTO.PaginationDto;
+using Microsoft.EntityFrameworkCore;
 
 namespace D_Fitness_Gym.Utils
 {
@@ -15,7 +16,7 @@ namespace D_Fitness_Gym.Utils
         /// <param name="pageNo">The page number (optional, defaults to 1).</param>
         /// <param name="pageSize">The page size (optional, defaults to 10).</param>
         /// <returns>A paginated IQueryable<TEntity> with applied pagination.</returns>
-        public static IQueryable<TEntity> ApplyPagination<TEntity>(IQueryable<TEntity> query, int? pageNo, int? pageSize)
+        public async static Task<RetrievePaginationDto<TEntity>> ApplyPagination<TEntity>(IQueryable<TEntity> query, int? pageNo, int? pageSize)
         {
             // Validate and set default values for pageNo and pageSize
             pageNo ??= 1;
@@ -34,11 +35,13 @@ namespace D_Fitness_Gym.Utils
             {
                 query = query.Skip((pageNo.Value - 1) * pageSize.Value).Take(pageSize.Value);
             }
+            // Fetch the data asynchronously for the current page
+            var data = await query.ToListAsync();
 
             // Create metadata with the paged entities
-            var metadata = new PaginationMetadata<TEntity>
+            var metadata = new RetrievePaginationDto<TEntity>
             {
-                Data = [.. query], // Fetch the data for the current page
+                Data = data, // Fetch the data for the current page
                 TotalCount = totalCount,
                 TotalPages = totalPages,
                 CurrentPage = pageNo.Value,
@@ -46,7 +49,7 @@ namespace D_Fitness_Gym.Utils
                 HasPreviousPage = hasPreviousPage,
                 HasNextPage = hasNextPage
             };
-            return query; 
+            return metadata; 
         }
         
         /// <summary>

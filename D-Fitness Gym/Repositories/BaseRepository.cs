@@ -1,4 +1,5 @@
 ﻿using D_Fitness_Gym.Data;
+using D_Fitness_Gym.Models.DTO.PaginationDto;
 using D_Fitness_Gym.Repositories.Interfaces;
 using D_Fitness_Gym.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,18 @@ namespace D_Fitness_Gym.Repositories
         ///  Retrieves all records of corresponding Entity Type.
         /// </summary>
         /// <returns>A list of all records of corresponding Entity Type</returns>
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
+        public virtual async Task<RetrievePaginationDto<TEntity>> GetAllAsync(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize, string[]? includes = null)
         {
             IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+            // Dynamically include navigation properties
+            if (includes != null)
+            {
+                foreach (var includeProperty in includes)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
 
             // Apply filtering if provided
             query = DynamicFilterHelper.ApplyFiltering(query, filterOn, filterBy);
@@ -30,9 +40,9 @@ namespace D_Fitness_Gym.Repositories
             query = DynamicSortingHelper.ApplySorting(query, sortOn, isAscending);
 
             // Apply pagination if provided
-            query = PaginationHelper.ApplyPagination(query, pageNo, pageSize);
+            var  response = await PaginationHelper.ApplyPagination(query, pageNo, pageSize);
 
-            return await query.ToListAsync();
+            return response;
         }
 
         /// <summary>

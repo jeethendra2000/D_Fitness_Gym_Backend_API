@@ -1,5 +1,5 @@
-﻿using D_Fitness_Gym.Models.DTO.AccountDto;
-using D_Fitness_Gym.Services;
+﻿using D_Fitness_Gym.CustomActionFilters;
+using D_Fitness_Gym.Models.DTO.AccountDto;
 using D_Fitness_Gym.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +15,12 @@ namespace D_Fitness_Gym.Controllers
         /// Retrieves all accounts.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAllAccounts(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
+        public async Task<IActionResult> GetAllAccounts(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize, [FromQuery] string[]? includes)
         {
-            var allUsers = await _accountService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize);
+            //string[]? includes = ["Role"];
+            var allUsers = await _accountService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize, includes);
 
-            if(allUsers == null || !allUsers.Any()) 
+            if(allUsers == null || !allUsers.Data.Any()) 
                    return NoContent();
 
             return Ok(allUsers);
@@ -37,22 +38,18 @@ namespace D_Fitness_Gym.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateAccount(CreateAccountDto createAccountDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var account = await _accountService.CreateAsync(createAccountDto); 
 
             return CreatedAtAction(nameof(GetAccountById), new { id = account.Id }, account);
         }
 
         [HttpPatch("{id:guid}")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateAccount(Guid id, UpdateAccountDto updateAccountDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var account = await _accountService.UpdateAsync(id, updateAccountDto);
 
             if (account == null)

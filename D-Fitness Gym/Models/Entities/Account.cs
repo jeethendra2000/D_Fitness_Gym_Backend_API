@@ -25,7 +25,7 @@ namespace D_Fitness_Gym.Models.Entities
         // Foreign Key
         public Guid RoleId { get; set; }
 
-        // Relationship / Navigation Properties
+        // Navigation Properties
         public Role Role { get; set; }
         public List<Transaction> TransactionsAsPayer { get; set; } = [];
         public List<Transaction> TransactionsAsPayee { get; set; } = [];

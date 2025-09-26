@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace D_Fitness_Gym.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250921175121_store gender as string")]
-    partial class storegenderasstring
+    [Migration("20250922202851_Initial Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

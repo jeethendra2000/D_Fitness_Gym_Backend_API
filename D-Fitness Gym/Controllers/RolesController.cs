@@ -19,7 +19,7 @@ namespace D_Fitness_Gym.Controllers
         {
             var allRoles = await _roleService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize);
 
-            if (allRoles == null || !allRoles.Any())
+            if (allRoles == null || !allRoles.Data.Any())
                 return NoContent(); // Return 204 if no roles are found
 
             // Return 200 with the roles
