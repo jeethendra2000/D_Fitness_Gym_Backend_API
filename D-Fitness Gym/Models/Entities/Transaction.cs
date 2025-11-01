@@ -18,8 +18,6 @@ namespace D_Fitness_Gym.Models.Entities
         public Guid? SubscriptionId { get; set; }  // Only needed for subscription payments
 
         // Relationship / Navigation Properties
-        public Account Payer { get; set; }
-        public Account Payee { get; set; }
         public Subscription Subscription { get; set; }
     }
 }

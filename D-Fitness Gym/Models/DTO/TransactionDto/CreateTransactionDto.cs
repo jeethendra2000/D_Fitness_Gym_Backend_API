@@ -1,5 +1,4 @@
-﻿using D_Fitness_Gym.Models.DTO.AccountDto;
-using D_Fitness_Gym.Models.DTO.SubscriptionDto;
+﻿using D_Fitness_Gym.Models.DTO.SubscriptionDto;
 using D_Fitness_Gym.Models.Enums;
 
 namespace D_Fitness_Gym.Models.DTO.TransactionDto
@@ -15,8 +14,6 @@ namespace D_Fitness_Gym.Models.DTO.TransactionDto
         public TransactionStatus Status { get; set; } = TransactionStatus.Pending;
 
         // Navigation Properties
-        public CreateAccountDto Payer { get; set; }
-        public CreateAccountDto Payee { get; set; }
         public CreateSubscriptionDto Subscription { get; set; }
     }
 }

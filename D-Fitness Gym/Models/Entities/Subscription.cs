@@ -14,7 +14,7 @@ namespace D_Fitness_Gym.Models.Entities
         public Guid MembershipId { get; set; }
 
         // Relationship / Navigation Properties
-        public User User { get; set; }
+        public Customer Customer { get; set; }
         public Membership Membership { get; set; }
         public List<Transaction> Transactions { get; set; } = [];
     }

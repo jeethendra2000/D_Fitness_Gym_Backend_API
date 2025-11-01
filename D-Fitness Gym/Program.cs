@@ -13,12 +13,19 @@ if (builder.Environment.IsDevelopment())
 
 // Register all services (moved to Extensions folder)
 builder.Services
-    .AddDatabaseConfigurations(builder.Configuration, builder.Environment)  // 1. Database (foundation of the app)
-    .AddIdentityAndConfigurations(builder.Configuration)                    // 2. Identity 
-    .AddApplicationServices(builder.Configuration, builder.Environment)     // 3. Application layer (repositories, services, AutoMapper, etc.)
-    .AddJwtAuthentication(builder.Configuration)                            // 4. Authentication / Authorization (depends on Identity)
-    .AddSwaggerDocumentation()                                              // 5. Swagger (depends only on base services)
-    .AddCustomControllers();                                                // 6. API Controllers (depends only on base services)
+    .AddDatabaseConfigurations(builder.Configuration, builder.Environment)  // 1. Database (foundation of the app)                
+    .AddApplicationServices(builder.Configuration, builder.Environment)     // 2. Application layer (repositories, services, AutoMapper, etc.)
+    .AddSwaggerDocumentation()                                              // 3. Swagger (depends only on base services)
+    .AddCors(options =>
+    {
+        options.AddPolicy("AllowAll", policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+    })                                                                      // 4. Identity
+    .AddCustomControllers();                                                // 5. API Controllers (depends only on base services)
 
 // Build app
 var app = builder.Build();
@@ -27,12 +34,14 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() ||
+    builder.Configuration.GetValue<bool>("EnableSwaggerInProd"))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

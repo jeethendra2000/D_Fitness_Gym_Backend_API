@@ -1,12 +1,10 @@
 ﻿using D_Fitness_Gym.Models.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace D_Fitness_Gym.Repositories.Interfaces
 {
     // Data access layer
-    public interface IRoleRepository : IBaseRepository<Role>
+    public interface IGymRepository : IBaseRepository<Gym>
     {
         // Add role-specific methods here if needed
-        
     }
 }

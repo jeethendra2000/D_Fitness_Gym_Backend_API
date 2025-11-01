@@ -1,6 +1,5 @@
 ﻿using D_Fitness_Gym.Models.DTO.MembershipDto;
 using D_Fitness_Gym.Models.DTO.TransactionDto;
-using D_Fitness_Gym.Models.DTO.UserDto;
 using D_Fitness_Gym.Models.Enums;
 
 namespace D_Fitness_Gym.Models.DTO.SubscriptionDto
@@ -13,7 +12,6 @@ namespace D_Fitness_Gym.Models.DTO.SubscriptionDto
         public SubscriptionStatus Status { get; set; } = SubscriptionStatus.Inactive;
 
         // Navigation Properties
-        public RetrieveUserDto User { get; set; }
         public RetrieveMembershipDto Membership { get; set; }
         public List<RetrieveTransactionDto> Transactions { get; set; } = [];
     }

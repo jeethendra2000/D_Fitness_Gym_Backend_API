@@ -12,13 +12,8 @@ namespace D_Fitness_Gym.Extensions
                 ? config.GetConnectionString("DefaultSQLConnection")
                 : Environment.GetEnvironmentVariable("PUBLIC_DB_CONNECTION_STRING");
 
-            var authConnectionString = env.IsDevelopment()
-                ? config.GetConnectionString("DefaultAuthSQLConnection")
-                : Environment.GetEnvironmentVariable("PUBLIC_AUTH_DB_CONNECTION_STRING");
-
             // Register DBContext
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-            services.AddDbContext<DFitnessAuthDBContext>(options => options.UseSqlServer(authConnectionString));
 
             return services;
         }

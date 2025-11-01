@@ -17,26 +17,21 @@ namespace D_Fitness_Gym.Extensions
             ////);
 
             // Register AutoMapper with assembly scanning containing your profiles (Automapper-V14.0.0)
-            services.AddAutoMapper(typeof(AccountProfile).Assembly);
+            services.AddAutoMapper(typeof(GymProfile).Assembly);
 
             // Services
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IGymService, GymService>();
             services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<ITrainerService, TrainerService>();
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<ITransactionService, TransactionService>();
 
             // Repositories
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGymRepository, GymRepository>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<ITrainerRepository, TrainerRepository>();
             services.AddScoped<IMembershipRepository, MembershipRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<ITokenRepository, TokenRepository>();
 
             return services;
 
