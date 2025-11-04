@@ -21,16 +21,24 @@ namespace D_Fitness_Gym.Extensions
 
             // Services
             services.AddScoped<IGymService, GymService>();
-            services.AddScoped<ISubscriptionService, SubscriptionService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<ITrainerService, TrainerService>();
+            services.AddScoped<IEnquiryService, EnquiryService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<IOfferService, OfferService>();
             services.AddScoped<IMembershipService, MembershipService>();
+            services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<ITransactionService, TransactionService>();
 
             // Repositories
             services.AddScoped<IGymRepository, GymRepository>();
-            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ITrainerRepository, TrainerRepository>();
+            services.AddScoped<IEnquiryRepository, EnquiryRepository>();
+            services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+            services.AddScoped<IOfferRepository, OfferRepository>();
             services.AddScoped<IMembershipRepository, MembershipRepository>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
 
             return services;

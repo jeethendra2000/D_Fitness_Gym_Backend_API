@@ -1,23 +1,27 @@
 ﻿using D_Fitness_Gym.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace D_Fitness_Gym.Models.Entities
 {
     public class Transaction
     {
         public Guid Id { get; set; }
-        public string? Name { get; set; }
-        public int Amount { get; set; }
-        public TransactionType Type { get; set; }
-        public string? Description { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
-        public TransactionStatus Status { get; set; } = TransactionStatus.Pending;
+        public required Guid PayerId { get; set; }   // who pays - owner, customer
+        public required Guid PayeeId { get; set; }  // who receives - owner, employee
 
-        // Foreign Key
-        public required Guid PayerId { get; set; }   // who pays
-        public required Guid PayeeId { get; set; }  // who receives
-        public Guid? SubscriptionId { get; set; }  // Only needed for subscription payments
+        [Range(1, 1000000)]
+        public required decimal Amount { get; set; }
+        public required TransactionType Type { get; set; }
+        public required TransactionStatus Status { get; set; } = TransactionStatus.Pending;
+        public Guid? SubscriptionId { get; set; } 
+        public string? Description { get; set; }
+
+        [MaxLength(255)]
+        public string? PaymentGatewayId { get; set; }  // Stripe/Razorpay ID
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
         // Relationship / Navigation Properties
-        public Subscription Subscription { get; set; }
+        public Subscription? Subscription { get; set; }
+        public Employee? PayeeEmployee { get; set; }
     }
 }

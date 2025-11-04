@@ -1,5 +1,4 @@
-﻿using D_Fitness_Gym.Models.Entities;
-using System;
+﻿using D_Fitness_Gym.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,17 +24,12 @@ namespace D_Fitness_Gym.Models.Entities
         public int Salary { get; set; }
 
         [Required]
-        public bool IsActive { get; set; } = true;
-
-        [Required]
-        public Guid GymId { get; set; } // Gym Reference
+        public Status Status { get; set; } = Status.Active;
 
         // Foreign Key
         public Guid? ReportsToEmployeeID { get; set; } // Self-referencing foreign key (manager)
 
         // Navigation Properties
-        public Gym Gym { get; set; } = null!;
-
         [ForeignKey(nameof(ReportsToEmployeeID))]
         public Employee? ReportsTo { get; set; }
         public ICollection<Employee>? Subordinates { get; set; }

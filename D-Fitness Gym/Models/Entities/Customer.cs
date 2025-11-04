@@ -24,15 +24,13 @@ namespace D_Fitness_Gym.Models.Entities
 
         public Guid? TrainerId { get; set; }
         
-        [Required]
-        public Guid GymId { get; set; } // Gym reference
+        public required Guid GymId { get; set; } // Gym reference
 
         // Foreign Key
         [ForeignKey(nameof(TrainerId))]
         public Trainer? Trainer { get; set; }
 
         // Navigation Properties
-        public Gym Gym { get; set; } = null!;
         public List<Subscription> Subscriptions { get; set; } = [];
 
         // 🔗 Optional: For external linking (not stored in DB)

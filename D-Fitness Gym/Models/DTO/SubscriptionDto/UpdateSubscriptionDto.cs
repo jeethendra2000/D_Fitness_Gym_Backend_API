@@ -1,17 +1,21 @@
-﻿using D_Fitness_Gym.Models.DTO.MembershipDto;
-using D_Fitness_Gym.Models.DTO.TransactionDto;
+﻿using System.ComponentModel.DataAnnotations;
 using D_Fitness_Gym.Models.Enums;
 
 namespace D_Fitness_Gym.Models.DTO.SubscriptionDto
 {
     public class UpdateSubscriptionDto
     {
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public SubscriptionStatus Status { get; set; } = SubscriptionStatus.Inactive;
+        public Guid? CustomerId { get; set; }
 
-        // Navigation Properties
-        public UpdateMembershipDto Membership { get; set; }
-        public List<UpdateTransactionDto> Transactions { get; set; } = [];
+        public Guid? MembershipID { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        public Status? Status { get; set; }
+
+        public bool? AutoRenew { get; set; }
+
     }
 }

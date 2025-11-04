@@ -9,6 +9,10 @@ namespace D_Fitness_Gym.Data
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Gym> Gym { get; set; }
+        public DbSet<Enquiry> Enquiries { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Offer> Offers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<Transaction> Transactions { get; set; }

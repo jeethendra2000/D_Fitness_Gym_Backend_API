@@ -1,12 +1,15 @@
-﻿namespace D_Fitness_Gym.Models.DTO.TrainerDto
-{
-    public class RetrieveTrainerDto 
-    {
-        public Guid Id { get; set; }
-        public int Experience { get; set; }
-        public TimeOnly AvailableFrom { get; set; }
-        public TimeOnly AvailableTo { get; set; }
+﻿using D_Fitness_Gym.Models.DTO.EmployeeDto;
 
-        // Navigation Properties
+namespace D_Fitness_Gym.Models.DTO.TrainerDto
+{
+    public class RetrieveTrainerDto : RetrieveEmployeeDto
+    {
+        public string Specialization { get; set; } = string.Empty;
+        public int YearsOfExperience { get; set; }
+        public string? Bio { get; set; }
+        public string? Certification { get; set; }
+        public decimal? Rating { get; set; }
+        public TimeOnly? AvailableFrom { get; set; }
+        public TimeOnly? AvailableTo { get; set; }
     }
 }

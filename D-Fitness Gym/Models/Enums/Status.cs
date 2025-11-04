@@ -1,6 +1,6 @@
 ﻿namespace D_Fitness_Gym.Models.Enums
 {
-    public enum SubscriptionStatus
+    public enum Status
     {
         Active,
         Inactive
