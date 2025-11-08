@@ -17,6 +17,14 @@ namespace D_Fitness_Gym.Data
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
+        // ---------- Enum Conversion---------- //
+        protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+        {
+            // Global enum → string mapping
+            builder.Properties<Enum>()
+                .HaveConversion<string>()
+                .HaveMaxLength(50);
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -46,20 +54,13 @@ namespace D_Fitness_Gym.Data
                         "([Type] = 'SubscriptionPayment' AND [SubscriptionId] IS NOT NULL) OR " +
                         "([Type] <> 'SubscriptionPayment' AND [SubscriptionId] IS NULL)")
                 );
-
-            // ---------- Enum Conversion---------- //
             modelBuilder.Entity<Transaction>()
-                .Property(t => t.Type)
-                .HasConversion<string>();
+              .Property(t => t.Amount)
+              .HasPrecision(18, 2); // precision, scale
 
-            modelBuilder.Entity<Transaction>()
-                .Property(t => t.Status)
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Subscription>()
-                .Property(s => s.Status)
-                .HasConversion<string>();
-
+            modelBuilder.Entity<Membership>()
+              .Property(m => m.Amount)
+              .HasPrecision(18, 2); // precision, scale
 
             // -------------------------
             // Relationships
