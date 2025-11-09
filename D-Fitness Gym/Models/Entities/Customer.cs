@@ -24,8 +24,6 @@ namespace D_Fitness_Gym.Models.Entities
 
         public Guid? TrainerId { get; set; }
         
-        public required Guid GymId { get; set; } // Gym reference
-
         // Foreign Key
         [ForeignKey(nameof(TrainerId))]
         public Trainer? Trainer { get; set; }
