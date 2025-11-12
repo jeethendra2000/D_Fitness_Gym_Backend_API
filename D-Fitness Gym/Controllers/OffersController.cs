@@ -57,7 +57,7 @@ namespace D_Fitness_Offer.Controllers
         /// <summary>
         /// Updates an existing offer.
         /// </summary>
-        [HttpPut("{id:guid}")]
+        [HttpPatch("{id:guid}")]
         [ValidateModel]
         public async Task<IActionResult> UpdateOffer(Guid id, UpdateOfferDto offerDto)
         {

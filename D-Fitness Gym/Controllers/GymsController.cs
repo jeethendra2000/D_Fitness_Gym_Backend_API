@@ -57,7 +57,7 @@ namespace D_Fitness_Gym.Controllers
         /// <summary>
         /// Updates an existing gym.
         /// </summary>
-        [HttpPut("{id:guid}")]
+        [HttpPatch("{id:guid}")]
         [ValidateModel]
         public async Task<IActionResult> UpdateGym(Guid id, UpdateGymDto gymDto)
         {

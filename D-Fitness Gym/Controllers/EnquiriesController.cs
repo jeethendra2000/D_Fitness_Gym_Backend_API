@@ -57,7 +57,7 @@ namespace D_Fitness_Enquiry.Controllers
         /// <summary>
         /// Updates an existing enquiry.
         /// </summary>
-        [HttpPut("{id:guid}")]
+        [HttpPatch("{id:guid}")]
         [ValidateModel]
         public async Task<IActionResult> UpdateEnquiry(Guid id, UpdateEnquiryDto enquiryDto)
         {

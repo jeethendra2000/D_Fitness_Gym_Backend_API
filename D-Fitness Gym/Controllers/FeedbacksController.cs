@@ -57,7 +57,7 @@ namespace D_Fitness_Feedback.Controllers
         /// <summary>
         /// Updates an existing feedback.
         /// </summary>
-        [HttpPut("{id:guid}")]
+        [HttpPatch("{id:guid}")]
         [ValidateModel]
         public async Task<IActionResult> UpdateFeedback(Guid id, UpdateFeedbackDto feedbackDto)
         {

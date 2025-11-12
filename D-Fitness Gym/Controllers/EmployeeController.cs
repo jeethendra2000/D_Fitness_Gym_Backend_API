@@ -57,7 +57,7 @@ namespace D_Fitness_Employee.Controllers
         /// <summary>
         /// Updates an existing employee.
         /// </summary>
-        [HttpPut("{id:guid}")]
+        [HttpPatch("{id:guid}")]
         [ValidateModel]
         public async Task<IActionResult> UpdateEmployee(Guid id, UpdateEmployeeDto employeeDto)
         {

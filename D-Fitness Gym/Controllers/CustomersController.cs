@@ -57,7 +57,7 @@ namespace D_Fitness_Customer.Controllers
         /// <summary>
         /// Updates an existing customer.
         /// </summary>
-        [HttpPut("{id:guid}")]
+        [HttpPatch("{id:guid}")]
         [ValidateModel]
         public async Task<IActionResult> UpdateCustomer(Guid id, UpdateCustomerDto customerDto)
         {
