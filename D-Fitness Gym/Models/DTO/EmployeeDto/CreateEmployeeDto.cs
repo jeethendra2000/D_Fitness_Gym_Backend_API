@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using D_Fitness_Gym.Models.DTO.AccountDto;
+using System.ComponentModel.DataAnnotations;
 
 namespace D_Fitness_Gym.Models.DTO.EmployeeDto
 {
-    public class CreateEmployeeDto
+    public class CreateEmployeeDto : CreateAccountDto
     {
-        [Required(ErrorMessage = "Firebase UID is required.")]
-        [StringLength(100, ErrorMessage = "Firebase UID cannot exceed 100 characters.")]
-        public required string Firebase_UID { get; set; }
 
         [Required(ErrorMessage = "Job title is required.")]
         [StringLength(100, ErrorMessage = "Job title cannot exceed 100 characters.")]

@@ -8,8 +8,9 @@ namespace D_Fitness_Gym.Models.Entities
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
+
         [StringLength(100)]
-        public required Guid CustomerId { get; set; } // FK to Django UserProfile
+        public required Guid CustomerId { get; set; } 
         public required Guid MembershipId { get; set; }
         public required DateTime StartDate { get; set; }
         public required DateTime EndDate { get; set; }
