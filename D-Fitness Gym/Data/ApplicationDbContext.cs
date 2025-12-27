@@ -37,10 +37,6 @@ namespace D_Fitness_Gym.Data
                 .HasValue<Employee>("Employee")
                 .HasValue<Trainer>("Trainer");
 
-            // Unique constraint on Firebase_UID
-            modelBuilder.Entity<Employee>()
-                .HasIndex(e => e.Firebase_UID)
-                .IsUnique();
 
             // ---------- Transaction ---------- //
             modelBuilder.Entity<Transaction>()
