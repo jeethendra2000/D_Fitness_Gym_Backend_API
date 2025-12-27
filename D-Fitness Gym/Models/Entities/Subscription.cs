@@ -1,21 +1,27 @@
 ﻿using D_Fitness_Gym.Models.Enums;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace D_Fitness_Gym.Models.Entities
 {
     public class Subscription
     {
-        public Guid Id { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public SubscriptionStatus Status { get; set; } = SubscriptionStatus.Inactive;
-
-        // Foreign Key
-        public Guid UserId { get; set; }
-        public Guid MembershipId { get; set; }
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
+        [StringLength(100)]
+        public required Guid CustomerId { get; set; } // FK to Django UserProfile
+        public required Guid MembershipId { get; set; }
+        public required DateTime StartDate { get; set; }
+        public required DateTime EndDate { get; set; }
+        public required bool AutoRenew { get; set; } = false;
+        public Status Status { get; set; } = Status.Inactive;
 
         // Relationship / Navigation Properties
-        public User User { get; set; }
-        public Membership Membership { get; set; }
+        [ForeignKey(nameof(CustomerId))]
+        public Customer Customer { get; set; } = null!;
+
+        [ForeignKey(nameof(MembershipId))]
+        public Membership Membership { get; set; } = null!;
         public List<Transaction> Transactions { get; set; } = [];
     }
 }

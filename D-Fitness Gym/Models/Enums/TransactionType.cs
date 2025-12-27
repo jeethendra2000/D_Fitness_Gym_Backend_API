@@ -4,6 +4,7 @@
     {
         SubscriptionPayment,
         Salary,
+        Refund,
         Other
     }
 }

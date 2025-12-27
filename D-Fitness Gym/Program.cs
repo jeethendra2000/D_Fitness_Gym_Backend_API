@@ -1,108 +1,50 @@
-using D_Fitness_Gym.Data;
-using D_Fitness_Gym.Mappings;
+using D_Fitness_Gym.Extensions;
 using D_Fitness_Gym.Middleware;
-using D_Fitness_Gym.Repositories;
-using D_Fitness_Gym.Repositories.Interfaces;
-using D_Fitness_Gym.Services;
-using D_Fitness_Gym.Services.Interfaces;
 using DotNetEnv;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load environment variables in development from .env
+// Load .env variables for local development
+builder.Configuration.AddEnvironmentVariables();
 if (builder.Environment.IsDevelopment())
 {
     Env.Load(); // loads variables from .env
 }
 
-//// Register AutoMapper with license and assembly scanning containing your profiles (Automapper-V15.0.1)
-//builder.Services.AddAutoMapper(
-//    cfg => cfg.LicenseKey = Environment.GetEnvironmentVariable("AUTO_MAPPER_LICENCE_KEY"),  // required
-//    typeof(AccountProfile).Assembly                    // scan profiles
-//);
+// Register all services (moved to Extensions folder)
+builder.Services
+    .AddDatabaseConfigurations(builder.Configuration, builder.Environment)  // 1. Database (foundation of the app)                
+    .AddApplicationServices(builder.Configuration, builder.Environment)     // 2. Application layer (repositories, services, AutoMapper, etc.)
+    .AddSwaggerDocumentation()                                              // 3. Swagger (depends only on base services)
+    .AddCors(options =>
+    {
+        options.AddPolicy("AllowAll", policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+    })                                                                      // 4. Identity
+    .AddCustomControllers();                                                // 5. API Controllers (depends only on base services)
 
-//Register AutoMapper with assembly scanning containing your profiles (Automapper-V14.0.0)
-builder.Services.AddAutoMapper(typeof(AccountProfile).Assembly);
-
-
-// Register Controller
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-});
-
-// Register Account Services & Repositories (Scoped = one per request)
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-
-// Register Role Services & Repositories
-builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-
-// Register User Services & Repositories
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-// Register Subscription Services & Repositories
-builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
-builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-
-// Register Trainer Services & Repositories
-builder.Services.AddScoped<ITrainerService, TrainerService>();
-builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
-
-// Register Membership Services & Repositories
-builder.Services.AddScoped<IMembershipService, MembershipService>();
-builder.Services.AddScoped<IMembershipRepository, MembershipRepository>();
-
-// Register Transaction Services & Repositories
-builder.Services.AddScoped<ITransactionService, TransactionService>();
-builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-
-//// Register Repositories dynamically
-///Install Scrutor NuGet package and then use this
-//builder.Services.Scan(scan => scan
-//    .FromAssemblyOf<IBaseRepository<object>>()  // pick assembly where repos live
-//    .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Repository")))
-//    .AsImplementedInterfaces()
-//    .WithScopedLifetime());
-
-//// Register Services dynamically
-//builder.Services.Scan(scan => scan
-//    .FromAssemblyOf<IBaseService<object, object, object, object>>()  // pick assembly where services live
-//    .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service")))
-//    .AsImplementedInterfaces()
-//    .WithScopedLifetime());
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Configure EF Core with the correct connection string based on the environment (appsettings.json or .env)
-var connectionString = builder.Environment.IsDevelopment() ? builder.Configuration.GetConnectionString("DefaultSQLConnection") : Environment.GetEnvironmentVariable("PUBLIC_DB_CONNECTION_STRING");
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-
+// Build app
 var app = builder.Build();
 
 // Global Exception Handling (Middleware / Filter)
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || true)
+if (app.Environment.IsDevelopment() ||
+    builder.Configuration.GetValue<bool>("EnableSwaggerInProd"))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

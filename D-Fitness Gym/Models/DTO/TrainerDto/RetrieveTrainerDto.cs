@@ -1,15 +1,15 @@
-﻿using D_Fitness_Gym.Models.DTO.AccountDto;
-using D_Fitness_Gym.Models.DTO.UserDto;
+﻿using D_Fitness_Gym.Models.DTO.EmployeeDto;
 
 namespace D_Fitness_Gym.Models.DTO.TrainerDto
 {
-    public class RetrieveTrainerDto : RetrieveAccountDto
+    public class RetrieveTrainerDto : RetrieveEmployeeDto
     {
-        public int Experience { get; set; }
-        public TimeOnly AvailableFrom { get; set; }
-        public TimeOnly AvailableTo { get; set; }
-
-        // Navigation Properties
-        public List<RetrieveUserDto> Users { get; set; } = [];
+        public string Specialization { get; set; } = string.Empty;
+        public int YearsOfExperience { get; set; }
+        public string? Bio { get; set; }
+        public string? Certification { get; set; }
+        public decimal? Rating { get; set; }
+        public TimeOnly? AvailableFrom { get; set; }
+        public TimeOnly? AvailableTo { get; set; }
     }
 }

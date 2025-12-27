@@ -1,21 +1,25 @@
-﻿using D_Fitness_Gym.Models.DTO.AccountDto;
-using D_Fitness_Gym.Models.DTO.SubscriptionDto;
-using D_Fitness_Gym.Models.Enums;
+﻿using D_Fitness_Gym.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace D_Fitness_Gym.Models.DTO.TransactionDto
 {
     public class UpdateTransactionDto
     {
-        public string? Name { get; set; }
-        public int Amount { get; set; }
-        public TransactionType Type { get; set; }
-        public string? Description { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
-        public TransactionStatus Status { get; set; } = TransactionStatus.Pending;
+        public Guid? PayerId { get; set; }
 
-        // Navigation Properties
-        public UpdateAccountDto Payer { get; set; }
-        public UpdateAccountDto Payee { get; set; }
-        public UpdateSubscriptionDto Subscription { get; set; }
+        public Guid? PayeeId { get; set; }
+
+        [Range(1, 1000000)]
+        public decimal? Amount { get; set; }
+
+        public TransactionType? Type { get; set; }
+
+        public TransactionStatus? Status { get; set; }
+
+        public Guid? SubscriptionId { get; set; }
+
+        public string? Description { get; set; }
+
+        public string? PaymentGatewayId { get; set; }
     }
 }

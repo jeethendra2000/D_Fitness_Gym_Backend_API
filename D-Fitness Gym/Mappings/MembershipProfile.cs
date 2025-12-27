@@ -9,7 +9,7 @@ namespace D_Fitness_Gym.Mappings
         public MembershipProfile() 
         {
             CreateMap<CreateMembershipDto, Membership>().ReverseMap();
-            CreateMap<UpdateMembershipDto, Membership>().ReverseMap();
+            CreateMap<UpdateMembershipDto, Membership>().ForAllMembers(opt => opt.Condition((src, dest, srcValue) => srcValue != null)); ;
             CreateMap<Membership, RetrieveMembershipDto>().ReverseMap();
         }
     }
