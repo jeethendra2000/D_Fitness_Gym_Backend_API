@@ -6,7 +6,8 @@ namespace D_Fitness_Gym.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
-        public DbSet<Admin> Admins { get; set; }
+        //public DbSet<Admin> Admins { get; set; }
+        public DbSet<Account> Accounts { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Trainer> Trainers { get; set; }

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using D_Fitness_Gym.Models.DTO.AccountDto;
 using D_Fitness_Gym.Models.DTO.EmployeeDto;
 using D_Fitness_Gym.Models.DTO.EnquiryDto;
 using D_Fitness_Gym.Models.DTO.FeedbackDto;
-using D_Fitness_Gym.Models.DTO.GymDto;
 using D_Fitness_Gym.Models.DTO.MembershipDto;
 using D_Fitness_Gym.Models.DTO.OfferDto;
 using D_Fitness_Gym.Models.DTO.PaginationDto;
@@ -18,7 +18,7 @@ namespace D_Fitness_Gym.Mappings
         public PaginationProfile()
         {
             // Map inner entities to their DTOs
-            CreateMap<Gym, RetrieveGymDto>().ReverseMap();
+            CreateMap<Account, RetrieveAccountDto>().ReverseMap();
             CreateMap<Employee, RetrieveEmployeeDto>().ReverseMap();
             CreateMap<Enquiry, RetrieveEnquiryDto>().ReverseMap();
             CreateMap<Feedback, RetrieveFeedbackDto>().ReverseMap();

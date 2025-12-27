@@ -17,7 +17,6 @@ namespace D_Fitness_Gym.Extensions
             ////);
 
             // Register AutoMapper with assembly scanning containing your profiles (Automapper-V14.0.0)
-            services.AddAutoMapper(typeof(GymProfile).Assembly);
 
             // Services
             services.AddScoped<ICustomerService, CustomerService>();
