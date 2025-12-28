@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace D_Fitness_Gym.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251108143520_Initial Migration")]
-    partial class InitialMigration
+    [Migration("20251228131658_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,67 @@ namespace D_Fitness_Gym.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Account", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Firstname")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateOnly>("JoinedDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserType")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Accounts");
+
+                    b.HasDiscriminator<string>("UserType").HasValue("BaseAccount");
+
+                    b.UseTphMappingStrategy();
+                });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Admin", b =>
                 {
@@ -36,103 +97,9 @@ namespace D_Fitness_Gym.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("GymId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("GymId");
 
                     b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Firebase_UID")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<Guid>("GymId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("float");
-
-                    b.Property<Guid?>("TrainerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("TrainerRequired")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GymId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Employee", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("EmployeeType")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("Firebase_UID")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<Guid?>("GymId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("JobTitle")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<Guid?>("ReportsToEmployeeID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Salary")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Firebase_UID")
-                        .IsUnique();
-
-                    b.HasIndex("GymId");
-
-                    b.HasIndex("ReportsToEmployeeID");
-
-                    b.ToTable("Employees");
-
-                    b.HasDiscriminator<string>("EmployeeType").HasValue("Employee");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Enquiry", b =>
@@ -207,46 +174,6 @@ namespace D_Fitness_Gym.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Feedbacks");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Gym", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ManagedByFirebaseUID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("Website")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gym");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Membership", b =>
@@ -341,9 +268,6 @@ namespace D_Fitness_Gym.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("GymId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("MembershipId")
                         .HasColumnType("uniqueidentifier");
 
@@ -358,8 +282,6 @@ namespace D_Fitness_Gym.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("GymId");
 
                     b.HasIndex("MembershipId");
 
@@ -382,12 +304,10 @@ namespace D_Fitness_Gym.Migrations
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<Guid?>("PayeeEmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PayeeId")
+                    b.Property<Guid?>("OfferId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PayerId")
@@ -397,6 +317,11 @@ namespace D_Fitness_Gym.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("PaymentType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -405,21 +330,63 @@ namespace D_Fitness_Gym.Migrations
                     b.Property<Guid?>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Type")
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfferId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
+                {
+                    b.HasBaseType("D_Fitness_Gym.Models.Entities.Account");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<Guid?>("TrainerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("TrainerRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasIndex("TrainerId");
+
+                    b.HasDiscriminator().HasValue("Customer");
+                });
+
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Employee", b =>
+                {
+                    b.HasBaseType("D_Fitness_Gym.Models.Entities.Account");
+
+                    b.Property<string>("Bio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Salary")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("YearsOfExperience")
+                        .HasColumnType("int");
 
-                    b.HasIndex("PayeeEmployeeId");
-
-                    b.HasIndex("SubscriptionId");
-
-                    b.ToTable("Transactions", t =>
-                        {
-                            t.HasCheckConstraint("CK_Transaction_Subscription", "([Type] = 'SubscriptionPayment' AND [SubscriptionId] IS NOT NULL) OR ([Type] <> 'SubscriptionPayment' AND [SubscriptionId] IS NULL)");
-                        });
+                    b.HasDiscriminator().HasValue("Employee");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Trainer", b =>
@@ -432,65 +399,16 @@ namespace D_Fitness_Gym.Migrations
                     b.Property<TimeOnly?>("AvailableTo")
                         .HasColumnType("time");
 
-                    b.Property<string>("Bio")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Certification")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<decimal?>("Rating")
-                        .HasColumnType("decimal(2,1)");
 
                     b.Property<string>("Specialization")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("YearsOfExperience")
-                        .HasColumnType("int");
-
                     b.HasDiscriminator().HasValue("Trainer");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Admin", b =>
-                {
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Gym", "Gym")
-                        .WithMany()
-                        .HasForeignKey("GymId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Gym");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
-                {
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Gym", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("GymId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Trainer", "Trainer")
-                        .WithMany("Customers")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Trainer");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Employee", b =>
-                {
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Gym", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("GymId");
-
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Employee", "ReportsTo")
-                        .WithMany("Subordinates")
-                        .HasForeignKey("ReportsToEmployeeID");
-
-                    b.Navigation("ReportsTo");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Subscription", b =>
@@ -500,10 +418,6 @@ namespace D_Fitness_Gym.Migrations
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Gym", null)
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("GymId");
 
                     b.HasOne("D_Fitness_Gym.Models.Entities.Membership", "Membership")
                         .WithMany("Subscriptions")
@@ -518,37 +432,28 @@ namespace D_Fitness_Gym.Migrations
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Transaction", b =>
                 {
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Employee", "PayeeEmployee")
+                    b.HasOne("D_Fitness_Gym.Models.Entities.Offer", "AppliedDiscount")
                         .WithMany()
-                        .HasForeignKey("PayeeEmployeeId");
+                        .HasForeignKey("OfferId");
 
                     b.HasOne("D_Fitness_Gym.Models.Entities.Subscription", "Subscription")
                         .WithMany("Transactions")
                         .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("PayeeEmployee");
+                    b.Navigation("AppliedDiscount");
 
                     b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
                 {
-                    b.Navigation("Subscriptions");
-                });
+                    b.HasOne("D_Fitness_Gym.Models.Entities.Trainer", "Trainer")
+                        .WithMany("Customers")
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Employee", b =>
-                {
-                    b.Navigation("Subordinates");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Gym", b =>
-                {
-                    b.Navigation("Customers");
-
-                    b.Navigation("Employees");
-
-                    b.Navigation("Subscriptions");
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Membership", b =>
@@ -559,6 +464,11 @@ namespace D_Fitness_Gym.Migrations
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Subscription", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
+                {
+                    b.Navigation("Subscriptions");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Trainer", b =>

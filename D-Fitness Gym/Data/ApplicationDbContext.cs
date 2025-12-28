@@ -1,5 +1,4 @@
 ﻿using D_Fitness_Gym.Models.Entities;
-using D_Fitness_Gym.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace D_Fitness_Gym.Data
@@ -7,7 +6,8 @@ namespace D_Fitness_Gym.Data
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Customer> Customer { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Membership> Memberships { get; set; }
@@ -17,7 +17,6 @@ namespace D_Fitness_Gym.Data
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Offer> Offers { get; set; }
 
-        // ---------- Enum Conversion---------- //
         protected override void ConfigureConventions(ModelConfigurationBuilder builder)
         {
             // Global enum → string mapping
@@ -25,60 +24,54 @@ namespace D_Fitness_Gym.Data
                 .HaveConversion<string>()
                 .HaveMaxLength(50);
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-
-            // ---------- Employee ---------- //
-            // Optional: Configure discriminator for Employee/Trainer
-            modelBuilder.Entity<Employee>()
-                .HasDiscriminator<string>("EmployeeType")
+            // ---------- 1. Inheritance (TPH) ---------- //
+            // We configure the discriminator on the ROOT class (Account)
+            modelBuilder.Entity<Account>()
+                .HasDiscriminator<string>("UserType")
+                .HasValue<Account>("BaseAccount") // Should rarely be used
+                .HasValue<Customer>("Customer")
                 .HasValue<Employee>("Employee")
                 .HasValue<Trainer>("Trainer");
 
-            // Unique constraint on Firebase_UID
-            modelBuilder.Entity<Employee>()
-                .HasIndex(e => e.Firebase_UID)
+            // ---------- 2. Constraints ---------- //
+            // Unique constraint on Email for all accounts
+            modelBuilder.Entity<Account>()
+                .HasIndex(a => a.Email)
                 .IsUnique();
 
-            // ---------- Transaction ---------- //
+            // Precision for Currency fields
+            modelBuilder.Entity<Transaction>()
+                .Property(t => t.Amount)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Membership>()
+                .Property(m => m.Amount)
+                .HasPrecision(18, 2);
+
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.CreatedOn)
                 .HasDefaultValueSql("GETUTCDATE()");
 
-            // Database Check Constraint
-            modelBuilder.Entity<Transaction>()
-                .ToTable(t =>
-                    t.HasCheckConstraint("CK_Transaction_Subscription",
-                        "([Type] = 'SubscriptionPayment' AND [SubscriptionId] IS NOT NULL) OR " +
-                        "([Type] <> 'SubscriptionPayment' AND [SubscriptionId] IS NULL)")
-                );
-            modelBuilder.Entity<Transaction>()
-              .Property(t => t.Amount)
-              .HasPrecision(18, 2); // precision, scale
+            // ---------- 3. Relationships ---------- //
 
-            modelBuilder.Entity<Membership>()
-              .Property(m => m.Amount)
-              .HasPrecision(18, 2); // precision, scale
-
-            // -------------------------
-            // Relationships
-            // -------------------------
-
-            // User → Trainer relationship (N:1)
+            // Customer → Trainer (Many-to-One)
             modelBuilder.Entity<Customer>()
                 .HasOne(u => u.Trainer)
                 .WithMany(t => t.Customers)
                 .HasForeignKey(u => u.TrainerId)
-                .OnDelete(DeleteBehavior.NoAction); // prevent multiple cascade paths
+                .OnDelete(DeleteBehavior.NoAction);
 
-            // Transaction → Subscription relationship (N:1)
+            // Transaction → Subscription (Many-to-One)
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.Subscription)
                 .WithMany(s => s.Transactions)
                 .HasForeignKey(t => t.SubscriptionId)
-                .OnDelete(DeleteBehavior.SetNull); // if subscription deleted, keep transaction but null SubscriptionId
+                .OnDelete(DeleteBehavior.SetNull);
 
         }
     }
