@@ -20,7 +20,7 @@ namespace D_Fitness_Gym.Models.Entities
         public string? Bio { get; set; }
 
         [Required]
-        public DateTime HireDate { get; set; }
+        public DateOnly HireDate { get; set; }
 
         [Required]
         public Status Status { get; set; } = Status.Active;

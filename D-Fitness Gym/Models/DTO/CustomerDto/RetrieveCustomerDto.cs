@@ -1,9 +1,9 @@
-﻿namespace D_Fitness_Gym.Models.DTO.CustomerDto
+﻿using D_Fitness_Gym.Models.DTO.AccountDto;
+
+namespace D_Fitness_Gym.Models.DTO.CustomerDto
 {
-    public class RetrieveCustomerDto
+    public class RetrieveCustomerDto : RetrieveAccountDto
     {
-        public Guid Id { get; set; }
-        public string Firebase_UID { get; set; } = string.Empty;
         public double Height { get; set; }
         public double Weight { get; set; }
         public bool TrainerRequired { get; set; }

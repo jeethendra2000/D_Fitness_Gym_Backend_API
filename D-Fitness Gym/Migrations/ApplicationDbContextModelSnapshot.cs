@@ -66,6 +66,9 @@ namespace D_Fitness_Gym.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserType")
                         .IsRequired()
                         .HasMaxLength(13)
@@ -364,8 +367,8 @@ namespace D_Fitness_Gym.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("HireDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("JobTitle")
                         .IsRequired()

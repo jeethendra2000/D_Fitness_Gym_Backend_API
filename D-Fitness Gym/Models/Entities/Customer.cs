@@ -15,10 +15,9 @@ namespace D_Fitness_Gym.Models.Entities
         public double Weight { get; set; }
 
         public bool TrainerRequired { get; set; } = false;
-
-        // Navigation Properties
         public Guid? TrainerId { get; set; }
 
+        // Navigation Properties
         [ForeignKey(nameof(TrainerId))]
         public Trainer? Trainer { get; set; }
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace D_Fitness_Gym.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251228131658_Initial")]
-    partial class Initial
+    [Migration("20251229184312_Initial Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,6 +67,9 @@ namespace D_Fitness_Gym.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserType")
@@ -367,8 +370,8 @@ namespace D_Fitness_Gym.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("HireDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("JobTitle")
                         .IsRequired()

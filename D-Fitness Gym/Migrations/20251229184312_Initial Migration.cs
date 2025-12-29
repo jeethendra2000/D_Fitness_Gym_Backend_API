@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace D_Fitness_Gym.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,12 +16,13 @@ namespace D_Fitness_Gym.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Firstname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Lastname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JoinedDate = table.Column<DateOnly>(type: "date", nullable: false),
@@ -35,7 +36,7 @@ namespace D_Fitness_Gym.Migrations
                     Salary = table.Column<int>(type: "int", nullable: true),
                     YearsOfExperience = table.Column<int>(type: "int", nullable: true),
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    HireDate = table.Column<DateOnly>(type: "date", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Specialization = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Certification = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
