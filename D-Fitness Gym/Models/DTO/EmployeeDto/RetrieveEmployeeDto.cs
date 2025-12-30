@@ -9,7 +9,7 @@ namespace D_Fitness_Gym.Models.DTO.EmployeeDto
         public int Salary { get; set; }
         public int YearsOfExperience { get; set; }
         public string? Bio { get; set; }
-        public DateTime HireDate { get; set; }
+        public DateOnly HireDate { get; set; }
         public Status Status { get; set; }
     }
 }

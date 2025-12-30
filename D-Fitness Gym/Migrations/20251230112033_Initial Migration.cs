@@ -16,7 +16,6 @@ namespace D_Fitness_Gym.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Firstname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Lastname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -25,11 +24,12 @@ namespace D_Fitness_Gym.Migrations
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    JoinedDate = table.Column<DateOnly>(type: "date", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserType = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     Height = table.Column<double>(type: "float", nullable: true),
                     Weight = table.Column<double>(type: "float", nullable: true),
+                    JoinedDate = table.Column<DateOnly>(type: "date", nullable: true),
                     TrainerRequired = table.Column<bool>(type: "bit", nullable: true),
                     TrainerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     JobTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),

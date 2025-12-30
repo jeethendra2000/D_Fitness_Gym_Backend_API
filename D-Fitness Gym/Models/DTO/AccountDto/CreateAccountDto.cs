@@ -27,11 +27,8 @@ namespace D_Fitness_Gym.Models.DTO.AccountDto
 
         [Required]
         public DateOnly DateOfBirth { get; set; }
-
         public string? Address { get; set; }
         public string? Description { get; set; }
-
-        public DateOnly JoinedDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         public IFormFile? ProfileImageFile { get; set; }
 
     }

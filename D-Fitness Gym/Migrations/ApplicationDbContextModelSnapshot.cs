@@ -54,9 +54,6 @@ namespace D_Fitness_Gym.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateOnly>("JoinedDate")
-                        .HasColumnType("date");
-
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -345,6 +342,9 @@ namespace D_Fitness_Gym.Migrations
 
                     b.Property<double>("Height")
                         .HasColumnType("float");
+
+                    b.Property<DateOnly>("JoinedDate")
+                        .HasColumnType("date");
 
                     b.Property<Guid?>("TrainerId")
                         .HasColumnType("uniqueidentifier");

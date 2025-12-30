@@ -13,6 +13,7 @@ namespace D_Fitness_Gym.Models.Entities
 
         [Range(0, 300)]
         public double Weight { get; set; }
+        public DateOnly JoinedDate { get; set; }
 
         public bool TrainerRequired { get; set; } = false;
         public Guid? TrainerId { get; set; }

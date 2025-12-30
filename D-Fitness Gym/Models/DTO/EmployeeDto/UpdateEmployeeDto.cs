@@ -19,6 +19,6 @@ namespace D_Fitness_Gym.Models.DTO.EmployeeDto
 
         public Status? Status { get; set; }
 
-        public DateTime? HireDate { get; set; }
+        public DateOnly HireDate { get; set; }
     }
 }
