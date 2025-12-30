@@ -1,5 +1,6 @@
 ﻿using D_Fitness_Gym.Models.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace D_Fitness_Gym.Models.Entities
 {
@@ -7,8 +8,6 @@ namespace D_Fitness_Gym.Models.Entities
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
-
-        public string? ProfileImageUrl { get; set; }
         
         [Required]
         [StringLength(100)]
@@ -28,6 +27,7 @@ namespace D_Fitness_Gym.Models.Entities
         public string? Description { get; set; }
         public DateOnly JoinedDate { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public string? ProfileImageUrl { get; set; }
 
     }
 }

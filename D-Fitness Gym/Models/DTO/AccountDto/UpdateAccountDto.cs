@@ -11,16 +11,17 @@ namespace D_Fitness_Gym.Models.DTO.AccountDto
         [StringLength(100)]
         public string? Lastname { get; set; }
 
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
         public string? Email { get; set; }
 
-        [Phone]
+        [Phone(ErrorMessage = "Invalid phone number format")]
+        [StringLength(13)]
         public string? PhoneNumber { get; set; }
 
         public Gender? Gender { get; set; }
         public DateOnly? DateOfBirth { get; set; }
         public string? Address { get; set; }
         public string? Description { get; set; }
-        public IFormFile? ProfileImageUrl { get; set; }
+        public IFormFile? ProfileImageFile { get; set; }
     }
 }

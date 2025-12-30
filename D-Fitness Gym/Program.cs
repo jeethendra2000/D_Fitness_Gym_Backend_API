@@ -15,6 +15,7 @@ if (builder.Environment.IsDevelopment())
 builder.Services
     .AddDatabaseConfigurations(builder.Configuration, builder.Environment)  // 1. Database (foundation of the app)                
     .AddApplicationServices(builder.Configuration, builder.Environment)     // 2. Application layer (repositories, services, AutoMapper, etc.)
+    .AddHttpContextAccessor()
     .AddSwaggerDocumentation()                                              // 3. Swagger (depends only on base services)
     .AddCors(options =>
     {

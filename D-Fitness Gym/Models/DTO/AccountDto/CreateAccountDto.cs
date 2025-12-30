@@ -1,4 +1,4 @@
-﻿using D_Fitness_Gym.Models.Enums;
+﻿    using D_Fitness_Gym.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace D_Fitness_Gym.Models.DTO.AccountDto
@@ -19,6 +19,7 @@ namespace D_Fitness_Gym.Models.DTO.AccountDto
 
         [Required]
         [Phone(ErrorMessage = "Invalid phone number")]
+        [StringLength(13)]
         public required string PhoneNumber { get; set; }
 
         [Required]
@@ -31,7 +32,7 @@ namespace D_Fitness_Gym.Models.DTO.AccountDto
         public string? Description { get; set; }
 
         public DateOnly JoinedDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        public IFormFile? ProfileImageFile { get; set; }
 
-        public IFormFile? ProfileImageUrl { get; set; }
     }
 }

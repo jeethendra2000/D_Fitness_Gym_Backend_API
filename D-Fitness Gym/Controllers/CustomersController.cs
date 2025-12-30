@@ -46,7 +46,7 @@ namespace D_Fitness_Customer.Controllers
         /// </summary>
         [HttpPost]
         [ValidateModel]
-        public async Task<IActionResult> CreateCustomer(CreateCustomerDto customerDto)
+        public async Task<IActionResult> CreateCustomer([FromForm] CreateCustomerDto customerDto)
         {
             var customer = await _customerService.CreateAsync(customerDto);
 
@@ -59,7 +59,7 @@ namespace D_Fitness_Customer.Controllers
         /// </summary>
         [HttpPatch("{id:guid}")]
         [ValidateModel]
-        public async Task<IActionResult> UpdateCustomer(Guid id, UpdateCustomerDto customerDto)
+        public async Task<IActionResult> UpdateCustomer(Guid id, [FromForm] UpdateCustomerDto customerDto)
         {
             var customer = await _customerService.UpdateAsync(id, customerDto); // Return 404 if the customer was not found
 
