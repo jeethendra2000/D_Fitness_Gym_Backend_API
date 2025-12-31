@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace D_Fitness_Gym.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251108143520_Initial Migration")]
+    [Migration("20251231112817_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -25,6 +25,67 @@ namespace D_Fitness_Gym.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Account", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Firstname")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserType")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Accounts");
+
+                    b.HasDiscriminator<string>("UserType").HasValue("BaseAccount");
+
+                    b.UseTphMappingStrategy();
+                });
+
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Admin", b =>
                 {
                     b.Property<Guid>("Id")
@@ -36,103 +97,9 @@ namespace D_Fitness_Gym.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("GymId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("GymId");
 
                     b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Firebase_UID")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<Guid>("GymId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("float");
-
-                    b.Property<Guid?>("TrainerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("TrainerRequired")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GymId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Employee", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("EmployeeType")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("Firebase_UID")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<Guid?>("GymId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("JobTitle")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<Guid?>("ReportsToEmployeeID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Salary")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Firebase_UID")
-                        .IsUnique();
-
-                    b.HasIndex("GymId");
-
-                    b.HasIndex("ReportsToEmployeeID");
-
-                    b.ToTable("Employees");
-
-                    b.HasDiscriminator<string>("EmployeeType").HasValue("Employee");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Enquiry", b =>
@@ -209,46 +176,6 @@ namespace D_Fitness_Gym.Migrations
                     b.ToTable("Feedbacks");
                 });
 
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Gym", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ManagedByFirebaseUID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("Website")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gym");
-                });
-
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Membership", b =>
                 {
                     b.Property<Guid>("Id")
@@ -286,6 +213,52 @@ namespace D_Fitness_Gym.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Memberships");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            Amount = 1200m,
+                            CreatedOn = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "General Training (G.T.), Morning & Evening Access, Unlimited Equipment, Personal Training, Diet Guidance",
+                            Duration = 30,
+                            Name = "Monthly Plan",
+                            Status = "Active",
+                            Type = "Monthly"
+                        },
+                        new
+                        {
+                            Id = new Guid("b2c3d4e5-f6a7-4b5c-9d0e-1f2a3b4c5d6e"),
+                            Amount = 3000m,
+                            CreatedOn = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "General Training (G.T.), 5 Days Personal Training, Diet & Nutrition Guidance, Morning & Evening Access, Unlimited Equipment",
+                            Duration = 90,
+                            Name = "3 Months Plan",
+                            Status = "Active",
+                            Type = "Quarterly"
+                        },
+                        new
+                        {
+                            Id = new Guid("c3d4e5f6-a7b8-4c5d-0e1f-2a3b4c5d6e7f"),
+                            Amount = 5500m,
+                            CreatedOn = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "General Training (G.T.), 15 Days Personal Training, Diet & Nutrition Guidance, Morning & Evening Access, Unlimited Equipment",
+                            Duration = 180,
+                            Name = "6 Months Plan",
+                            Status = "Active",
+                            Type = "SemiAnnual"
+                        },
+                        new
+                        {
+                            Id = new Guid("d4e5f6a7-b8c9-4d5e-1f2a-3b4c5d6e7f8a"),
+                            Amount = 9999m,
+                            CreatedOn = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "General Training (G.T.), 1 Month Personal Training, Diet & Nutrition Guidance, Morning & Evening Access, Unlimited Equipment",
+                            Duration = 365,
+                            Name = "1 Year Plan",
+                            Status = "Active",
+                            Type = "Annual"
+                        });
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Offer", b =>
@@ -331,24 +304,20 @@ namespace D_Fitness_Gym.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("AutoRenew")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasMaxLength(100)
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("GymId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
 
                     b.Property<Guid>("MembershipId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -358,8 +327,6 @@ namespace D_Fitness_Gym.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("GymId");
 
                     b.HasIndex("MembershipId");
 
@@ -372,6 +339,9 @@ namespace D_Fitness_Gym.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -382,20 +352,17 @@ namespace D_Fitness_Gym.Migrations
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<Guid?>("PayeeEmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PayeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PayerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PaymentGatewayId")
+                    b.Property<string>("PaymentReferenceId")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("PaymentType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -405,21 +372,74 @@ namespace D_Fitness_Gym.Migrations
                     b.Property<Guid?>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Type")
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransactionType")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PayeeEmployeeId");
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("SubscriptionId");
 
-                    b.ToTable("Transactions", t =>
-                        {
-                            t.HasCheckConstraint("CK_Transaction_Subscription", "([Type] = 'SubscriptionPayment' AND [SubscriptionId] IS NOT NULL) OR ([Type] <> 'SubscriptionPayment' AND [SubscriptionId] IS NULL)");
-                        });
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
+                {
+                    b.HasBaseType("D_Fitness_Gym.Models.Entities.Account");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<DateOnly>("JoinedDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid?>("TrainerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("TrainerRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasIndex("TrainerId");
+
+                    b.HasDiscriminator().HasValue("Customer");
+                });
+
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Employee", b =>
+                {
+                    b.HasBaseType("D_Fitness_Gym.Models.Entities.Account");
+
+                    b.Property<string>("Bio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("HireDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Salary")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("YearsOfExperience")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("Employee");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Trainer", b =>
@@ -432,65 +452,16 @@ namespace D_Fitness_Gym.Migrations
                     b.Property<TimeOnly?>("AvailableTo")
                         .HasColumnType("time");
 
-                    b.Property<string>("Bio")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Certification")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<decimal?>("Rating")
-                        .HasColumnType("decimal(2,1)");
 
                     b.Property<string>("Specialization")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("YearsOfExperience")
-                        .HasColumnType("int");
-
                     b.HasDiscriminator().HasValue("Trainer");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Admin", b =>
-                {
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Gym", "Gym")
-                        .WithMany()
-                        .HasForeignKey("GymId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Gym");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
-                {
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Gym", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("GymId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Trainer", "Trainer")
-                        .WithMany("Customers")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Trainer");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Employee", b =>
-                {
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Gym", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("GymId");
-
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Employee", "ReportsTo")
-                        .WithMany("Subordinates")
-                        .HasForeignKey("ReportsToEmployeeID");
-
-                    b.Navigation("ReportsTo");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Subscription", b =>
@@ -498,12 +469,8 @@ namespace D_Fitness_Gym.Migrations
                     b.HasOne("D_Fitness_Gym.Models.Entities.Customer", "Customer")
                         .WithMany("Subscriptions")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Gym", null)
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("GymId");
 
                     b.HasOne("D_Fitness_Gym.Models.Entities.Membership", "Membership")
                         .WithMany("Subscriptions")
@@ -518,37 +485,35 @@ namespace D_Fitness_Gym.Migrations
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Transaction", b =>
                 {
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Employee", "PayeeEmployee")
-                        .WithMany()
-                        .HasForeignKey("PayeeEmployeeId");
+                    b.HasOne("D_Fitness_Gym.Models.Entities.Account", "Account")
+                        .WithMany("Transactions")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("D_Fitness_Gym.Models.Entities.Subscription", "Subscription")
                         .WithMany("Transactions")
                         .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("PayeeEmployee");
+                    b.Navigation("Account");
 
                     b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
                 {
-                    b.Navigation("Subscriptions");
+                    b.HasOne("D_Fitness_Gym.Models.Entities.Trainer", "Trainer")
+                        .WithMany("Customers")
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Employee", b =>
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Account", b =>
                 {
-                    b.Navigation("Subordinates");
-                });
-
-            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Gym", b =>
-                {
-                    b.Navigation("Customers");
-
-                    b.Navigation("Employees");
-
-                    b.Navigation("Subscriptions");
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Membership", b =>
@@ -559,6 +524,11 @@ namespace D_Fitness_Gym.Migrations
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Subscription", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Customer", b =>
+                {
+                    b.Navigation("Subscriptions");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Trainer", b =>

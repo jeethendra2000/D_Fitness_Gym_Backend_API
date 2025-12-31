@@ -29,6 +29,7 @@ namespace D_Fitness_Gym.Extensions
             services.AddScoped<IEnquiryService, EnquiryService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IOfferService, OfferService>();
+            services.AddScoped<IImageService, ImageService>();
 
             // Repositories
             services.AddScoped<ICustomerRepository, CustomerRepository>();

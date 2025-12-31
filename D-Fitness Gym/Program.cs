@@ -15,6 +15,7 @@ if (builder.Environment.IsDevelopment())
 builder.Services
     .AddDatabaseConfigurations(builder.Configuration, builder.Environment)  // 1. Database (foundation of the app)                
     .AddApplicationServices(builder.Configuration, builder.Environment)     // 2. Application layer (repositories, services, AutoMapper, etc.)
+    .AddHttpContextAccessor()
     .AddSwaggerDocumentation()                                              // 3. Swagger (depends only on base services)
     .AddCors(options =>
     {
@@ -40,7 +41,7 @@ if (app.Environment.IsDevelopment() ||
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseStaticFiles();
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseAuthentication();

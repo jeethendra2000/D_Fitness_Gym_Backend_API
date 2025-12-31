@@ -15,9 +15,9 @@ namespace D_Fitness_Employee.Controllers
         /// Retrieves all employees.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAllEmployees(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
+        public async Task<IActionResult> GetAllEmployees(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize, [FromQuery] string[]? includes)
         {
-            var allEmployees = await _employeeService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize);
+            var allEmployees = await _employeeService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize, includes);
 
             if (allEmployees == null || !allEmployees.Data.Any())
                 return NoContent(); // Return 204 if no employees are found
@@ -46,7 +46,7 @@ namespace D_Fitness_Employee.Controllers
         /// </summary>
         [HttpPost]
         [ValidateModel]
-        public async Task<IActionResult> CreateEmployee(CreateEmployeeDto employeeDto)
+        public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployeeDto employeeDto)
         {
             var employee = await _employeeService.CreateAsync(employeeDto);
 
@@ -59,7 +59,7 @@ namespace D_Fitness_Employee.Controllers
         /// </summary>
         [HttpPatch("{id:guid}")]
         [ValidateModel]
-        public async Task<IActionResult> UpdateEmployee(Guid id, UpdateEmployeeDto employeeDto)
+        public async Task<IActionResult> UpdateEmployee(Guid id, [FromForm] UpdateEmployeeDto employeeDto)
         {
             var employee = await _employeeService.UpdateAsync(id, employeeDto); // Return 404 if the employee was not found
 

@@ -10,11 +10,6 @@ namespace D_Fitness_Gym.Models.Entities
         
         [Required]
         [StringLength(100)]
-        public string Firebase_UID { get; set; } = string.Empty; // Firebase UID for linking with Django UserProfile
-                                                                 
-
-        // 🔗 Optional: For external linking (not stored in DB)
-        [NotMapped]
-        public string? DjangoProfileURL { get; set; }
+        public string Firebase_UID { get; set; } = string.Empty;
     }
 }

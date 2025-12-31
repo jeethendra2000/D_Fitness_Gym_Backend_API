@@ -39,7 +39,7 @@ namespace D_Fitness_Gym.Controllers
 
         [HttpPost]
         [ValidateModel]
-        public async Task<IActionResult> CreateTrainer(CreateTrainerDto createTrainerDto)
+        public async Task<IActionResult> CreateTrainer([FromForm] CreateTrainerDto createTrainerDto)
         {
             var trainer = await _trainerService.CreateAsync(createTrainerDto);
 
@@ -48,7 +48,7 @@ namespace D_Fitness_Gym.Controllers
 
         [HttpPatch("{id:guid}")]
         [ValidateModel]
-        public async Task<IActionResult> UpdateTrainer(Guid id, UpdateTrainerDto updateTrainerDto)
+        public async Task<IActionResult> UpdateTrainer(Guid id, [FromForm] UpdateTrainerDto updateTrainerDto)
         {
             var trainer = await _trainerService.UpdateAsync(id, updateTrainerDto);
 

@@ -15,9 +15,9 @@ namespace D_Fitness_Customer.Controllers
         /// Retrieves all customers.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAllCustomers(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
+        public async Task<IActionResult> GetAllCustomers(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize, [FromQuery] string[]? includes)
         {
-            var allCustomers = await _customerService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize);
+            var allCustomers = await _customerService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize, includes);
 
             if (allCustomers == null || !allCustomers.Data.Any())
                 return NoContent(); // Return 204 if no customers are found
@@ -46,7 +46,7 @@ namespace D_Fitness_Customer.Controllers
         /// </summary>
         [HttpPost]
         [ValidateModel]
-        public async Task<IActionResult> CreateCustomer(CreateCustomerDto customerDto)
+        public async Task<IActionResult> CreateCustomer([FromForm] CreateCustomerDto customerDto)
         {
             var customer = await _customerService.CreateAsync(customerDto);
 
@@ -59,7 +59,7 @@ namespace D_Fitness_Customer.Controllers
         /// </summary>
         [HttpPatch("{id:guid}")]
         [ValidateModel]
-        public async Task<IActionResult> UpdateCustomer(Guid id, UpdateCustomerDto customerDto)
+        public async Task<IActionResult> UpdateCustomer(Guid id, [FromForm] UpdateCustomerDto customerDto)
         {
             var customer = await _customerService.UpdateAsync(id, customerDto); // Return 404 if the customer was not found
 
