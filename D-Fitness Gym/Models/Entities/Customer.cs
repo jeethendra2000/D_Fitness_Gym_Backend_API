@@ -14,7 +14,6 @@ namespace D_Fitness_Gym.Models.Entities
         [Range(0, 300)]
         public double Weight { get; set; }
         public DateOnly JoinedDate { get; set; }
-
         public bool TrainerRequired { get; set; } = false;
         public Guid? TrainerId { get; set; }
 
@@ -23,7 +22,7 @@ namespace D_Fitness_Gym.Models.Entities
         public Trainer? Trainer { get; set; }
 
         // Use ICollection or List for navigation
-        public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+        public ICollection<Subscription> Subscriptions { get; set; } = [];
 
     }
 }

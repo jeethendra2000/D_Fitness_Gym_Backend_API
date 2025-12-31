@@ -15,6 +15,6 @@ namespace D_Fitness_Gym.Models.Entities
         public TimeOnly? AvailableTo { get; set; }
 
         // Navigation Properties
-        public ICollection<Customer> Customers { get; set; } = new List<Customer>();
+        public ICollection<Customer> Customers { get; set; } = [];
     }
 }

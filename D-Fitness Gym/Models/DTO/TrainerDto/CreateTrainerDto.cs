@@ -11,7 +11,6 @@ namespace D_Fitness_Gym.Models.DTO.TrainerDto
 
         [StringLength(150, ErrorMessage = "Certification cannot exceed 150 characters.")]
         public string? Certification { get; set; }
-
         public TimeOnly? AvailableFrom { get; set; }
         public TimeOnly? AvailableTo { get; set; }
     }

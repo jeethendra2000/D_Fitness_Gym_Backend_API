@@ -2,11 +2,11 @@
 {
     public enum PaymentType
     {
-        Card,
-        NetBanking,
         Cash,
         UPI,
+        Card,
         Wallet,
+        NetBanking,
         Other
     }
 }

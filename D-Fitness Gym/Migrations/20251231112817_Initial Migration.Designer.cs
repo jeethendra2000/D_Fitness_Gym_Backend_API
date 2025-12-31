@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace D_Fitness_Gym.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251230112033_Initial Migration")]
+    [Migration("20251231112817_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -213,6 +213,52 @@ namespace D_Fitness_Gym.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Memberships");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            Amount = 1200m,
+                            CreatedOn = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "General Training (G.T.), Morning & Evening Access, Unlimited Equipment, Personal Training, Diet Guidance",
+                            Duration = 30,
+                            Name = "Monthly Plan",
+                            Status = "Active",
+                            Type = "Monthly"
+                        },
+                        new
+                        {
+                            Id = new Guid("b2c3d4e5-f6a7-4b5c-9d0e-1f2a3b4c5d6e"),
+                            Amount = 3000m,
+                            CreatedOn = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "General Training (G.T.), 5 Days Personal Training, Diet & Nutrition Guidance, Morning & Evening Access, Unlimited Equipment",
+                            Duration = 90,
+                            Name = "3 Months Plan",
+                            Status = "Active",
+                            Type = "Quarterly"
+                        },
+                        new
+                        {
+                            Id = new Guid("c3d4e5f6-a7b8-4c5d-0e1f-2a3b4c5d6e7f"),
+                            Amount = 5500m,
+                            CreatedOn = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "General Training (G.T.), 15 Days Personal Training, Diet & Nutrition Guidance, Morning & Evening Access, Unlimited Equipment",
+                            Duration = 180,
+                            Name = "6 Months Plan",
+                            Status = "Active",
+                            Type = "SemiAnnual"
+                        },
+                        new
+                        {
+                            Id = new Guid("d4e5f6a7-b8c9-4d5e-1f2a-3b4c5d6e7f8a"),
+                            Amount = 9999m,
+                            CreatedOn = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "General Training (G.T.), 1 Month Personal Training, Diet & Nutrition Guidance, Morning & Evening Access, Unlimited Equipment",
+                            Duration = 365,
+                            Name = "1 Year Plan",
+                            Status = "Active",
+                            Type = "Annual"
+                        });
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Offer", b =>
@@ -258,21 +304,20 @@ namespace D_Fitness_Gym.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("AutoRenew")
-                        .HasColumnType("bit");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("CustomerId")
-                        .HasMaxLength(100)
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
 
                     b.Property<Guid>("MembershipId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -294,6 +339,9 @@ namespace D_Fitness_Gym.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -307,13 +355,7 @@ namespace D_Fitness_Gym.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<Guid?>("OfferId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PayerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PaymentGatewayId")
+                    b.Property<string>("PaymentReferenceId")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -330,9 +372,17 @@ namespace D_Fitness_Gym.Migrations
                     b.Property<Guid?>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("OfferId");
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("SubscriptionId");
 
@@ -419,7 +469,7 @@ namespace D_Fitness_Gym.Migrations
                     b.HasOne("D_Fitness_Gym.Models.Entities.Customer", "Customer")
                         .WithMany("Subscriptions")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("D_Fitness_Gym.Models.Entities.Membership", "Membership")
@@ -435,16 +485,18 @@ namespace D_Fitness_Gym.Migrations
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Transaction", b =>
                 {
-                    b.HasOne("D_Fitness_Gym.Models.Entities.Offer", "AppliedDiscount")
-                        .WithMany()
-                        .HasForeignKey("OfferId");
+                    b.HasOne("D_Fitness_Gym.Models.Entities.Account", "Account")
+                        .WithMany("Transactions")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("D_Fitness_Gym.Models.Entities.Subscription", "Subscription")
                         .WithMany("Transactions")
                         .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("AppliedDiscount");
+                    b.Navigation("Account");
 
                     b.Navigation("Subscription");
                 });
@@ -457,6 +509,11 @@ namespace D_Fitness_Gym.Migrations
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Trainer");
+                });
+
+            modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Account", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("D_Fitness_Gym.Models.Entities.Membership", b =>

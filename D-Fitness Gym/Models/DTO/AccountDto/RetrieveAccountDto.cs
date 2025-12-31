@@ -1,4 +1,6 @@
-﻿using D_Fitness_Gym.Models.Enums;
+﻿using D_Fitness_Gym.Models.DTO.SubscriptionDto;
+using D_Fitness_Gym.Models.DTO.TransactionDto;
+using D_Fitness_Gym.Models.Enums;
 
 namespace D_Fitness_Gym.Models.DTO.AccountDto
 {
@@ -15,5 +17,7 @@ namespace D_Fitness_Gym.Models.DTO.AccountDto
         public string? Address { get; set; }
         public DateTime CreatedOn { get; set; }
         public string? ProfileImageUrl { get; set; }
+        //public ICollection<RetrieveTransactionDto> Transactions { get; set; } = [];
+
     }
 }

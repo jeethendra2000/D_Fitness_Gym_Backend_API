@@ -8,13 +8,21 @@ namespace D_Fitness_Gym.Models.Entities
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
-        [StringLength(100)]
-        public required Guid CustomerId { get; set; } // FK to Django UserProfile
-        public required Guid MembershipId { get; set; }
-        public required DateTime StartDate { get; set; }
-        public required DateTime EndDate { get; set; }
-        public required bool AutoRenew { get; set; } = false;
-        public Status Status { get; set; } = Status.Inactive;
+        
+        [Required]
+        public Guid CustomerId { get; set; }
+
+        [Required]
+        public Guid MembershipId { get; set; }
+
+        [Required]
+        public DateOnly StartDate { get; set; }
+
+        [Required]
+        public DateOnly EndDate { get; set; }
+
+        public SubscriptionStatus Status { get; set; } = SubscriptionStatus.New;
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
         // Relationship / Navigation Properties
         [ForeignKey(nameof(CustomerId))]
@@ -22,6 +30,6 @@ namespace D_Fitness_Gym.Models.Entities
 
         [ForeignKey(nameof(MembershipId))]
         public Membership Membership { get; set; } = null!;
-        public List<Transaction> Transactions { get; set; } = [];
+        public ICollection<Transaction> Transactions { get; set; } = [];
     }
 }

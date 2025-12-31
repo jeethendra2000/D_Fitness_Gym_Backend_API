@@ -10,7 +10,12 @@ namespace D_Fitness_Gym.Models.Entities
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        public Guid PayerId { get; set; }   // Reference to Account ID (Customer/Employee)
+        public Guid AccountId { get; set; }
+
+        [Required]
+        public TransactionType TransactionType { get; set; } = TransactionType.SubscriptionPayment;
+
+        public Guid? SubscriptionId { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
@@ -20,29 +25,24 @@ namespace D_Fitness_Gym.Models.Entities
         [Required]
         public PaymentType PaymentType { get; set; } = PaymentType.Cash;
 
-        [Required]
-        public TransactionStatus Status { get; set; } = TransactionStatus.Pending;
+        [StringLength(255)]
+        public string? PaymentReferenceId { get; set; }
 
         [StringLength(500)]
         public string? Description { get; set; }
 
-        [StringLength(255)]
-        public string? PaymentGatewayId { get; set; }  // Stripe/Razorpay/PayPal ID
-
+        [Required]
+        public TransactionStatus Status { get; set; } = TransactionStatus.Pending;
+        public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
-        // ---------- Foreign Keys ---------- //
-
-        public Guid? SubscriptionId { get; set; }
-
-        public Guid? OfferId { get; set; }
 
         // ---------- Navigation Properties ---------- //
 
         [ForeignKey(nameof(SubscriptionId))]
         public Subscription? Subscription { get; set; }
 
-        [ForeignKey(nameof(OfferId))]
-        public Offer? AppliedDiscount { get; set; }
+        [ForeignKey(nameof(AccountId))]
+        public Account Account { get; set; } = null!;
     }
 }

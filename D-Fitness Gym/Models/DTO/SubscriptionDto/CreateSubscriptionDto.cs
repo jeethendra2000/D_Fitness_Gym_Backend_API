@@ -9,18 +9,17 @@ namespace D_Fitness_Gym.Models.DTO.SubscriptionDto
         [Required(ErrorMessage = "CustomerId is required.")]
         public Guid CustomerId { get; set; }
 
-        [Required(ErrorMessage = "Membership ID is required.")]
-        public Guid MembershipID { get; set; }
+        [Required(ErrorMessage = "MembershipId is required.")]
+        public Guid MembershipId { get; set; }
 
         [Required(ErrorMessage = "Start date is required.")]
-        public DateTime StartDate { get; set; }
+        public DateOnly StartDate { get; set; }
 
         [Required(ErrorMessage = "End date is required.")]
-        public DateTime EndDate { get; set; }
+        public DateOnly EndDate { get; set; }
 
         [Required]
-        public Status Status { get; set; } = Status.Inactive;
-        public bool AutoRenew { get; set; } = false;
+        public SubscriptionStatus Status { get; set; } = SubscriptionStatus.New;
 
     }
 }

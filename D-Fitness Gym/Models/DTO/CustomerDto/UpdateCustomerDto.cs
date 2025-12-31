@@ -11,9 +11,8 @@ namespace D_Fitness_Gym.Models.DTO.CustomerDto
 
         [Range(0, 300, ErrorMessage = "Weight must be between 0 and 300 kg.")]
         public double? Weight { get; set; }
-        public DateOnly JoinedDate { get; set; }
+        public DateOnly? JoinedDate { get; set; }
         public bool? TrainerRequired { get; set; }
-
         public Guid? TrainerId { get; set; }
     }
 }
