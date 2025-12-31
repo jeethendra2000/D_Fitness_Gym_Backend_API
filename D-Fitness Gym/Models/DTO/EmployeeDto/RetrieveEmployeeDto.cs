@@ -1,4 +1,5 @@
 ﻿using D_Fitness_Gym.Models.DTO.AccountDto;
+using D_Fitness_Gym.Models.DTO.TransactionDto;
 using D_Fitness_Gym.Models.Enums;
 
 namespace D_Fitness_Gym.Models.DTO.EmployeeDto
@@ -11,5 +12,7 @@ namespace D_Fitness_Gym.Models.DTO.EmployeeDto
         public string? Bio { get; set; }
         public DateOnly HireDate { get; set; }
         public Status Status { get; set; }
+        public ICollection<RetrieveTransactionDto> Transactions { get; set; } = [];
+
     }
 }

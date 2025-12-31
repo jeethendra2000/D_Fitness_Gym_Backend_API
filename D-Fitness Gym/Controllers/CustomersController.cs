@@ -15,9 +15,9 @@ namespace D_Fitness_Customer.Controllers
         /// Retrieves all customers.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAllCustomers(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize)
+        public async Task<IActionResult> GetAllCustomers(string? filterOn, string? filterBy, string? sortOn, bool? isAscending, int? pageNo, int? pageSize, [FromQuery] string[]? includes)
         {
-            var allCustomers = await _customerService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize);
+            var allCustomers = await _customerService.GetAllAsync(filterOn, filterBy, sortOn, isAscending, pageNo, pageSize, includes);
 
             if (allCustomers == null || !allCustomers.Data.Any())
                 return NoContent(); // Return 204 if no customers are found

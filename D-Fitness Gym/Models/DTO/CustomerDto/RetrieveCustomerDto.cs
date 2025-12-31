@@ -12,5 +12,6 @@ namespace D_Fitness_Gym.Models.DTO.CustomerDto
         public DateOnly JoinedDate { get; set; }
         public Guid? TrainerId { get; set; }
         public ICollection<RetrieveSubscriptionDto> Subscriptions { get; set; } = [];
+        public ICollection<RetrieveTransactionDto> Transactions { get; set; } = [];
     }
 }
