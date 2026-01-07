@@ -5,8 +5,8 @@ namespace D_Fitness_Gym.Utils
 {
     public class PaginationHelper
     {
-        private const int DEFAULT_PAGE_SIZE = 10;
-        private const int MAX_PAGE_SIZE = 100;
+        private const int DEFAULT_PAGE_SIZE = 1000;
+        private const int MAX_PAGE_SIZE = 5000;
 
         /// <summary>
         /// Applies pagination to the query and returns the paged result.
