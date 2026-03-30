@@ -9,6 +9,7 @@ namespace D_Fitness_Gym.Repositories.Interfaces
         Task<TEntity> CreateAsync(TEntity entity);
         Task<TEntity?> UpdateAsync(TEntity entity);
         Task<bool> DeleteAsync(TEntity entity);
+        Task SaveChangesAsync();
     }
     
 }
