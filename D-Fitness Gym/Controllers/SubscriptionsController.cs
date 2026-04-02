@@ -78,5 +78,19 @@ namespace D_Fitness_Gym.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("expire")]
+        public async Task<IActionResult> ExpireSubscriptions()
+        {
+            var expiredSubscriptionsCount = await _subscriptionService.ExpireSubscriptionsAsync();
+            string message = expiredSubscriptionsCount switch
+            {
+                0 => "No subscriptions were updated as expired.",
+                1 => "1 subscription has been updated as expired.",
+                _ => $"{expiredSubscriptionsCount} subscriptions have been updated as expired."
+            };
+
+            return Ok(message);
+        }
     }
 }

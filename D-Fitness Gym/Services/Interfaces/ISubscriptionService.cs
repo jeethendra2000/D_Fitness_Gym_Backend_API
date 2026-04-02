@@ -6,6 +6,6 @@ namespace D_Fitness_Gym.Services.Interfaces
     public interface ISubscriptionService : IBaseService<Subscription, CreateSubscriptionDto, UpdateSubscriptionDto, RetrieveSubscriptionDto>
     {
         // Subscription-specific methods can be added here
-
+        Task<int> ExpireSubscriptionsAsync();
     }
 }

@@ -103,5 +103,16 @@ namespace D_Fitness_Gym.Repositories
             // Returns true if the entity was successfully deleted (i.e., changes were saved).
             return true;
         }
+
+        /// <summary>
+        /// Persists all changes made to tracked entities in the database asynchronously.
+        /// Any additions, updates, or deletions that have been applied to entities 
+        /// tracked by the DbContext will be saved to the underlying database.
+        /// </summary>
+        /// <returns>A task representing the asynchronous save operation.</returns>
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
